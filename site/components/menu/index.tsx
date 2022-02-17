@@ -32,7 +32,7 @@ const Menu = () => {
     (list?: RouterProps[]) => {
       return list?.map((item) => {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const md = require('@package/' + item.key + '/README.mdx');
+        const md = require('@components/' + item.key + '/README.mdx');
 
         return (
           <nav
