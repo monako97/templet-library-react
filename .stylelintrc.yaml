@@ -1,0 +1,4 @@
+extends:
+  - stylelint-config-neko
+ignoreFiles:
+  - node_modules
