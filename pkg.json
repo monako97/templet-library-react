@@ -14,10 +14,10 @@
     "removeComments": false,
     "preserveConstEnums": true,
     "newLine": "lf",
-    "rootDir": "package",
+    "rootDir": "components",
     "outDir": "lib",
     "lib": ["DOM", "es2016"],
     "typeRoots": ["node_modules/@types", "typings"]
   },
-  "include": ["package", "typings"]
+  "include": ["components", "typings"]
 }

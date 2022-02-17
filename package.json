@@ -12,7 +12,7 @@
   "dependencies": {},
   "files": [
     "config",
-    "package",
+    "components",
     "typings",
     "site",
     "LICENSE",
