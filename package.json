@@ -1,6 +1,6 @@
 {
   "name": "plugin-library-template",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "库开发模板",
   "main": "lib/index.js",
   "scripts": {},
