@@ -1,26 +1,22 @@
 {
   "name": "plugin-library-template",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "库开发模板",
   "main": "lib/index.js",
-  "scripts": {
-    "start": "skyl start library",
-    "build": "skyl build library",
-    "stylelint:fix": "skyl stylelint fix",
-    "eslint:fix": "skyl eslint fix"
+  "scripts": {},
+  "author": {
+    "name": "moneko"
   },
-  "author": "skyl",
   "license": "MIT",
-  "devDependencies": {
-    "eslint-config-neko": "^1.0.5",
-    "plugin-postcss": "^1.0.13",
-    "plugin-runtime": "^2.0.1",
-    "skyl": "^1.1.81",
-    "stylelint-config-neko": "^1.0.3"
-  },
-  "dependencies": {
-    "font-pingfang-sc": "^1.0.5",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
-  }
+  "devDependencies": {},
+  "dependencies": {},
+  "files": [
+    "config",
+    "package",
+    "typings",
+    "site",
+    "LICENSE",
+    "tsconfig.json",
+    "pkg.json"
+  ]
 }
