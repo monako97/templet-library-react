@@ -1,4 +1,0 @@
-extends:
-  - neko
-ignorePatterns:
-  - dist/

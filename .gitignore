@@ -1,8 +1,0 @@
-.temp_cache
-.idea
-.vscode
-.DS_Store
-.swc
-node_modules
-dist
-package-lock.json
