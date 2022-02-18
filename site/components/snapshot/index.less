@@ -1,0 +1,34 @@
+.snapshot {
+  border: 1px solid @border-color-base;
+  border-radius: @border-radius-base;
+  margin-bottom: @distance;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.preview {
+  padding: @distance;
+  text-align: right;
+  width: 100%;
+}
+
+.toolbar {
+  width: fit-content;
+  background-color: rgba(221, 221, 221, 0.5);
+  padding: 0 @distance;
+  text-align: center;
+  cursor: pointer;
+  float: right;
+
+  &:hover,
+  &.open {
+    color: @primary-color;
+    background-color: @hover-bg;
+  }
+}
+
+.code {
+  padding: 0 @distance;
+}

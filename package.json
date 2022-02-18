@@ -9,7 +9,9 @@
   },
   "license": "MIT",
   "devDependencies": {},
-  "dependencies": {},
+  "dependencies": {
+    "react-hooks-widget": "^1.0.48"
+  },
   "files": [
     "config",
     "components",

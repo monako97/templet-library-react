@@ -57,7 +57,7 @@ const Menu = () => {
   }, [location.pathname]);
   return (
     <aside className={styles.menu}>
-      <div className={styles.title}>{'skyline'}</div>
+      <div className={styles.title}>{projectName.replace('-', ' ')}</div>
       {renderMenu(myPkgs)}
     </aside>
   );
