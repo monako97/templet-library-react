@@ -5,6 +5,7 @@ const conf: PartialConfigType = {
   prefixCls: 'business',
   modifyVars: {
     '@primary-color': '#e6ebf3',
+    '@border-color-base': '4px',
   },
 };
 
