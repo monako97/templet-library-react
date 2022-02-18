@@ -1,5 +1,5 @@
 import React from 'react';
-import { WaveCircle } from 'skyline-ui';
+import { WaveCircle } from 'libraryNameTemplate';
 
 const Example: React.FC = () => {
   return (
