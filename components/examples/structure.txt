@@ -1,0 +1,21 @@
+|.
+|____.eslintrc.yaml eslint配置
+|____.gitattributes git文件属性设置
+|____.prettierrc.yaml prettier配置
+|____.stylelintrc.yaml stylelint配置
+|____components/ 组件源码目录
+| |____index.ts 组件统一导出文件
+| |____wave-circle/ 开发组件目录
+| | |____examples/ 开发组件案例代码，配合组件文档使用
+| | |____index.global.less 组件源码
+| | |____index.tsx 组件源码
+| | |____README.mdx 组件文档，配合案例代码使用
+|____config/ 脚手架配置
+|____dist/ 编译的文档代码
+|____lib/ 编译的组件代码
+|____package.json                   
+|____pkg.json
+|____README.md
+|____site/
+|____tsconfig.json
+|____typings
