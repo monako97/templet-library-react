@@ -2,7 +2,7 @@ import React from 'react';
 import isEqual from 'lodash/isEqual';
 import './index.global.less';
 
-interface WaveCircleProps {
+export interface WaveCircleProps {
   /** 背景颜色 */
   bgColor?: string;
   /** 动画曲线 */
