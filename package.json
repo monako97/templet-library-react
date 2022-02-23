@@ -22,6 +22,8 @@
     "react-hooks-widget": "^1.0.48"
   },
   "files": [
+    "test",
+    "jest.config.ts",
     "config",
     "components",
     "typings",
