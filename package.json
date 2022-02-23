@@ -1,7 +1,7 @@
 {
   "name": "plugin-library-template",
   "version": "1.0.11",
-  "description": "库模板",
+  "description": "组件库模板",
   "main": "lib/index.js",
   "scripts": {},
   "author": {
