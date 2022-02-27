@@ -2,6 +2,34 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styles from './index.less';
 import { myPkgs, RouterProps, useLocation, useNavigate } from 'plugin-runtime';
 
+type MenuType = {
+  subtitle?: string;
+  key: string;
+  title: string;
+  path: string;
+};
+
+const menuObj: Record<string, MenuType[]> = {};
+
+const extractMenu = (list: RouterProps[]) => {
+  return list?.map((item) => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const md = require('@pkg/' + item.key + '/README.mdx');
+    const type = md.basic.type || 'default';
+    const prev = menuObj[type] || [];
+
+    Object.assign(menuObj, {
+      [type]: prev.concat({
+        ...md.basic,
+        path: item.path,
+        key: item.key,
+      }),
+    });
+  });
+};
+
+extractMenu(myPkgs);
+
 const Menu = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,11 +57,8 @@ const Menu = () => {
   );
 
   const renderMenu = useCallback(
-    (list?: RouterProps[]) => {
+    (list?: MenuType[]) => {
       return list?.map((item) => {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const md = require('@pkg/' + item.key + '/README.mdx');
-
         return (
           <nav
             key={item.key}
@@ -41,10 +66,9 @@ const Menu = () => {
             onClick={() => handleMenu(item)}
           >
             <a>
-              {md.basic?.title || item.path}
-              {md.basic?.subtitle && <i>{md.basic.subtitle}</i>}
+              {item.title || item.path}
+              {item.subtitle && <i>{item.subtitle}</i>}
             </a>
-            {renderMenu(item.children)}
           </nav>
         );
       });
@@ -58,7 +82,14 @@ const Menu = () => {
   return (
     <aside className={styles.menu}>
       <div className={styles.title}>{projectName.replace('-', ' ')}</div>
-      {renderMenu(myPkgs)}
+      {Object.keys(menuObj).map((key) => {
+        return (
+          <div key={key}>
+            <h5 className={styles.group}>{key}</h5>
+            {renderMenu(menuObj[key])}
+          </div>
+        );
+      })}
     </aside>
   );
 };

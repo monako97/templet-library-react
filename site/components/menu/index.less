@@ -3,19 +3,25 @@
   top: 0;
   width: 250px;
   max-width: 250px;
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
   padding: @distance 12px;
   background-color: #fff;
+  border-radius: @border-radius-base;
 }
 
 .title {
-  color: @text-color;
+  color: @heading-color;
   font-weight: bold;
   font-size: 32px;
   line-height: normal;
   padding: 0 12px;
   margin-bottom: @distance;
+  text-align: center;
+}
+
+.group {
+  color: @text-color-secondary;
 }
 
 .collapsed {
@@ -26,9 +32,10 @@
   cursor: pointer;
   padding: 12px;
   border-radius: @border-radius-base;
+  transition: background-color @transition-duration @transition-timing-function;
 
   a {
-    color: #000;
+    color: @heading-color;
   }
 
   i {
@@ -37,9 +44,12 @@
     display: block;
   }
 
-  &:hover,
+  &:hover {
+    background-color: fade(@hover-bg, 5%);
+  }
+
   &.active {
-    background-color: @hover-bg;
+    background-color: fade(@hover-bg, 10%);
     font-weight: 500;
   }
 }

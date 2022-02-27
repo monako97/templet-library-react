@@ -1,38 +1,34 @@
-import React, { useRef } from "react";
-import {
-  // projectBasicInfo,
-  useOutlet,
-} from "plugin-runtime";
-import Menu from "../components/menu";
-import styles from "./index.less";
-// import { ConfigProvider } from "antd";
-// import zh_CN from "antd/es/locale/zh_CN";
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import { BackTop } from "react-hooks-widget";
-
-// 如果需要antd, 则取消注释
+import React, { useEffect, useRef } from 'react';
+import { projectBasicInfo, useLocation, useOutlet } from 'plugin-runtime';
+import Menu from '../components/menu';
+import styles from './index.less';
+import { ConfigProvider } from 'antd';
+import zh_CN from 'antd/es/locale/zh_CN';
+import { BackTop } from 'react-hooks-widget';
 
 const App: React.FC = () => {
-  const box = useRef(null);
+  const box = useRef<HTMLElement>(null);
   const readme = useOutlet();
+  const location = useLocation();
+
+  useEffect(() => {
+    box.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [location.pathname]);
 
   return (
-    <>
-      {/* <ConfigProvider {...projectBasicInfo.providerConfig} locale={zh_CN}> */}
+    <ConfigProvider {...projectBasicInfo.providerConfig} locale={zh_CN}>
       <div className={styles.layout}>
         <Menu />
         <article className={styles.container}>
-          <Header />
-          <main ref={box}>
-            <article className={styles.readme}>{readme}</article>
-            <Footer />
+          <main>
+            <article className={styles.readme} ref={box}>
+              {readme}
+            </article>
             <BackTop target={() => box.current || document.body} />
           </main>
         </article>
       </div>
-      {/* </ConfigProvider> */}
-    </>
+    </ConfigProvider>
   );
 };
 

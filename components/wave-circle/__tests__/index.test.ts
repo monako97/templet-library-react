@@ -5,9 +5,7 @@ import { shallow } from 'enzyme';
 describe('测试 <WaveCircle />', () => {
   it('测试 <WaveCircle /> snapshot', () => {
     const props: WaveCircleProps = {
-      bgColor: `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(
-        Math.random() * 255
-      )}, ${Math.floor(Math.random() * 255)})`,
+      bgColor: `rgb(0, 0, 0)`,
       timingFunction: 'linear',
     };
     const wrapper = shallow(React.createElement(WaveCircle, props, 'moe'));
