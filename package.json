@@ -1,6 +1,10 @@
 {
   "name": "plugin-library-template",
+<<<<<<< HEAD
   "version": "1.0.16",
+=======
+  "version": "1.0.15",
+>>>>>>> 63c96c426d39232003724df68767ef2f31bf88b6
   "description": "组件库模板",
   "main": "lib/index.js",
   "scripts": {},
