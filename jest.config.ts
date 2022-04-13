@@ -13,9 +13,11 @@ export default {
   clearMocks: true,
   coverageDirectory: 'coverage',
   testEnvironment: 'jsdom',
+  roots: ['components'],
   coveragePathIgnorePatterns: [
     '<rootDir>/test/',
     '<rootDir>/lib/',
+    '<rootDir>/es/',
     '<rootDir>/dist/',
     '<rootDir>/node_modules/',
   ],
@@ -23,19 +25,28 @@ export default {
   testPathIgnorePatterns: [
     '<rootDir>/test/',
     '<rootDir>/lib/',
+    '<rootDir>/es/',
     '<rootDir>/dist/',
     '<rootDir>/node_modules/',
+    'iconfont.js',
   ],
   transformIgnorePatterns: [
     '<rootDir>/lib/',
+    '<rootDir>/es/',
     '<rootDir>/dist/',
-    '<rootDir>/node_modules/',
-    '!<rootDir>/node_modules/plugin-runtime/',
+    'iconfont.js',
   ],
   transform: {
     '^.+\\.(t|j)sx?$': '@swc/jest',
   },
-  setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
+  setupFilesAfterEnv: [
+    // 跳过自动清理
+    '<rootDir>/node_modules/@testing-library/react-hooks/dont-cleanup-after-each.js',
+    // 禁用错误过滤功能
+    '<rootDir>/node_modules/@testing-library/react-hooks/disable-error-filtering.js',
+    '<rootDir>/node_modules/jest-enzyme/lib/index.js',
+    '<rootDir>/test/setup.ts',
+  ],
   testMatch: [
     '<rootDir>/components/**/__tests__/**/*.{js,jsx,ts,tsx}',
     '<rootDir>/site/**/__tests__/**/*.{js,jsx,ts,tsx}',
@@ -44,6 +55,7 @@ export default {
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       '<rootDir>/test/file.mock.ts',
     '\\.(css|less)$': 'identity-obj-proxy',
+    'iconfont.js$': '<rootDir>/test/file.mock.ts',
   },
   globals: globals,
 };

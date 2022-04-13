@@ -6,6 +6,7 @@ import { ConfigProvider } from 'antd';
 import zh_CN from 'antd/es/locale/zh_CN';
 import { BackTop } from 'react-hooks-widget';
 
+ConfigProvider.config(projectBasicInfo.providerConfig);
 const App: React.FC = () => {
   const box = useRef<HTMLElement>(null);
   const readme = useOutlet();

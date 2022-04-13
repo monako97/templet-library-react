@@ -15,7 +15,6 @@
     "preserveConstEnums": true,
     "newLine": "lf",
     "rootDir": "components",
-    "outDir": "lib",
     "lib": ["DOM", "es2016"],
     "typeRoots": ["node_modules/@types", "typings"]
   },

@@ -3,10 +3,11 @@ import React, { useCallback, useState } from 'react';
 import CodeBlock from '../code';
 import styles from './index.less';
 
-const Snapshot: React.FC<{ path: string; lang: string; style?: string }> = ({
+const Snapshot: React.FC<{ path: string; lang: string; style?: string; hideSource?: boolean }> = ({
   path,
   lang,
   style,
+  hideSource,
 }) => {
   const [code, setCode] = useState<string | null>();
   const [styleCode, setStyleCode] = useState<string | null>();
@@ -52,9 +53,14 @@ const Snapshot: React.FC<{ path: string; lang: string; style?: string }> = ({
             {styleCode ? 'hide' : 'show'} style
           </div>
         )}
-        <div className={[styles.toolbar, code && styles.open].join(' ')} onClick={handleShowSource}>
-          {code ? 'hide' : 'show'} source
-        </div>
+        {!hideSource && (
+          <div
+            className={[styles.toolbar, code && styles.open].join(' ')}
+            onClick={handleShowSource}
+          >
+            {code ? 'hide' : 'show'} source
+          </div>
+        )}
       </div>
       <div className={styles.code}>
         {code && <CodeBlock code={code as string} lang={lang} />}
