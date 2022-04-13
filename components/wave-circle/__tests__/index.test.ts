@@ -1,5 +1,6 @@
 import React from 'react';
-import WaveCircle, { WaveCircleProps } from '..';
+import { WaveCircle } from 'libraryNameTemplate';
+import type { WaveCircleProps } from 'libraryNameTemplate';
 import { shallow } from 'enzyme';
 
 describe('测试 <WaveCircle />', () => {
