@@ -13,8 +13,8 @@
   "license": "MIT",
   "devDependencies": {
     "@swc/jest": "^0.2.20",
-    "@testing-library/react": "^13.1.1",
-    "@testing-library/react-hooks": "^8.0.0",
+    "@testing-library/react": "^12.1.5",
+    "@testing-library/react-hooks": "^7.0.2",
     "@types/enzyme": "^3.10.12",
     "@types/jest": "^27.4.1",
     "@types/lodash": "^4.14.182",
@@ -23,10 +23,10 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
     "jest-enzyme": "^7.1.2",
-    "ts-node": "^10.7.0"
+    "ts-node": "^10.7.0",
+    "antd": "^4.19.5"
   },
   "dependencies": {
-    "antd": "^4.19.5",
     "react-hooks-widget": "^1.0.48"
   },
   "files": [

@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { projectBasicInfo, useLocation, useOutlet } from 'plugin-runtime';
-import Menu from '../components/menu';
 import styles from './index.less';
 import { ConfigProvider } from 'antd';
 import zh_CN from 'antd/es/locale/zh_CN';
+import Sider from '../components/sider';
 import { BackTop } from 'react-hooks-widget';
 
 ConfigProvider.config(projectBasicInfo.providerConfig);
+
 const App: React.FC = () => {
   const box = useRef<HTMLElement>(null);
   const readme = useOutlet();
@@ -19,7 +20,7 @@ const App: React.FC = () => {
   return (
     <ConfigProvider {...projectBasicInfo.providerConfig} locale={zh_CN}>
       <div className={styles.layout}>
-        <Menu />
+        <Sider />
         <article className={styles.container}>
           <main>
             <article className={styles.readme} ref={box}>

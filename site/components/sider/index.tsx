@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { myPkgs, projectBasicInfo, RouterProps, useLocation, useNavigate } from 'plugin-runtime';
 import styles from './index.less';
-import { myPkgs, RouterProps, useLocation, useNavigate } from 'plugin-runtime';
 
 type MenuType = {
   subtitle?: string;
   key: string;
   title: string;
   path: string;
+  icon?: React.ReactNode;
 };
 
 const menuObj: Record<string, MenuType[]> = {};
@@ -30,7 +31,7 @@ const extractMenu = (list: RouterProps[]) => {
 
 extractMenu(myPkgs);
 
-const Menu = () => {
+const Sider = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [openKey, setOpenKey] = useState<string[]>([]);
@@ -60,16 +61,16 @@ const Menu = () => {
     (list?: MenuType[]) => {
       return list?.map((item) => {
         return (
-          <nav
-            key={item.key}
-            className={[styles.item, activeKey === item.key && styles.active].join(' ')}
-            onClick={() => handleMenu(item)}
-          >
-            <a>
-              {item.title || item.path}
-              {item.subtitle && <i>{item.subtitle}</i>}
-            </a>
-          </nav>
+          <React.Fragment key={item.key}>
+            <div
+              className={[styles.item, activeKey === item.key && styles.active].join(' ')}
+              onClick={() => handleMenu(item)}
+            >
+              <span className={styles.icon}>{item.icon}</span>
+              <div className={styles.con}>{item.title || item.path}</div>
+              {item.subtitle && <div className={styles.subTitle}>{item.subtitle}</div>}
+            </div>
+          </React.Fragment>
         );
       });
     },
@@ -79,19 +80,30 @@ const Menu = () => {
   useEffect(() => {
     setActiveKey(location.pathname.substring(1));
   }, [location.pathname]);
+
   return (
-    <aside className={styles.menu}>
-      <div className={styles.title}>{projectName.replace('-', ' ')}</div>
-      {Object.keys(menuObj).map((key) => {
-        return (
-          <div key={key}>
-            <h5 className={styles.group}>{key}</h5>
-            {renderMenu(menuObj[key])}
-          </div>
-        );
-      })}
-    </aside>
+    <div className={styles.nav}>
+      <div className={styles.logo}>
+        <div className={styles.logoImg}>
+          <img src="/logo.svg" alt="logo" />
+        </div>
+        <div className={styles.logoCon}>
+          <h2>{projectBasicInfo.projectName.replace('-', ' ')}</h2>
+          <p>{projectBasicInfo.programInfo.description}</p>
+        </div>
+      </div>
+      <div className={styles.sider}>
+        {Object.keys(menuObj).map((key) => {
+          return (
+            <React.Fragment key={key}>
+              <div className={styles.title}>{key}</div>
+              <div className={styles.menu}>{renderMenu(menuObj[key])}</div>
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
-export default Menu;
+export default Sider;
