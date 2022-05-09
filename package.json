@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "jest --watchAll --coverage",
-    "prebuild": "jest --coverage -u"
+    "prebuild": "jest --detectOpenHandles --coverage -u --force-exit"
   },
   "author": {
     "name": "moneko"
@@ -13,21 +13,22 @@
   "license": "MIT",
   "devDependencies": {
     "@swc/jest": "^0.2.20",
-    "@testing-library/react": "^13.1.1",
+    "@testing-library/react": "^13.2.0",
     "@testing-library/react-hooks": "^8.0.0",
     "@types/enzyme": "^3.10.12",
-    "@types/jest": "^27.4.1",
+    "@types/jest": "^27.5.0",
     "@types/lodash": "^4.14.182",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
     "enzyme": "^3.11.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^27.5.1",
+    "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0",
     "jest-enzyme": "^7.1.2",
-    "ts-node": "^10.7.0",
-    "antd": "^4.19.5"
+    "ts-node": "^10.7.0"
   },
   "dependencies": {
-    "react-hooks-widget": "^1.0.48"
+    "react-hooks-widget": "^1.0.48",
+    "antd": "^4.20.3"
   },
   "files": [
     "test",
