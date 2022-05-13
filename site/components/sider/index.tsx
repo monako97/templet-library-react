@@ -84,9 +84,7 @@ const Sider = () => {
   return (
     <div className={styles.nav}>
       <div className={styles.logo}>
-        <div className={styles.logoImg}>
-          <img src="/logo.svg" alt="logo" />
-        </div>
+        <div className={styles.logoImg} />
         <div className={styles.logoCon}>
           <h2>{projectBasicInfo.projectName.replace('-', ' ')}</h2>
           <p>{projectBasicInfo.programInfo.description}</p>
