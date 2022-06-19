@@ -1,7 +1,7 @@
 export const basic = {
-    category: 'UI组件',
-    type: '通用',
+    type: '开始',
     title: '说明',
+    subtitle: '注意事项',
 }
 
 #### 目录结构说明
@@ -11,7 +11,7 @@ import structure from './structure.txt';
 
 <CodeBlock code={structure} lang="treeview" />
 
-import MBox from '@/components/markdown';
+import MD from '@/components/markdown';
 import readme from './readme.md?raw';
 
-<MBox text={readme} />
+<MD text={readme} />

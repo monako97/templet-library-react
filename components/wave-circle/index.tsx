@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { HtmlHTMLAttributes } from 'react';
 import { isEqual } from 'lodash';
 import './index.global.less';
 
-export interface WaveCircleProps {
+export interface WaveCircleProps extends HtmlHTMLAttributes<HTMLDivElement> {
   /** 背景颜色 */
   bgColor?: string;
   /** 动画曲线 */
   timingFunction?: string;
-  className?: string;
   children?: React.ReactNode;
 }
 
-const _WaveCircle: React.FC<WaveCircleProps> = ({
+const WaveCircle: React.FC<WaveCircleProps> = ({
   bgColor,
   timingFunction,
   children,
   className,
-}: WaveCircleProps) => {
+  ...props
+}) => {
   const prefixStyles = () => {
     return Object.assign(
       {},
@@ -31,6 +31,7 @@ const _WaveCircle: React.FC<WaveCircleProps> = ({
 
   return (
     <div
+      {...props}
       className={['wave-circles', className].join(' ')}
       style={prefixStyles() as React.CSSProperties}
     >
@@ -42,15 +43,4 @@ const _WaveCircle: React.FC<WaveCircleProps> = ({
   );
 };
 
-/**
- * 圆形波纹
- * @constructor
- * @param {string} bgColor 波浪背景色
- * @param {string} timingFunction 动画曲线
- * @param {React.ReactNode} children 内容
- */
-const WaveCircle = React.memo(_WaveCircle, (pre, next) => {
-  return isEqual(pre, next);
-});
-
-export default WaveCircle;
+export default React.memo(WaveCircle, isEqual);

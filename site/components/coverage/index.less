@@ -8,23 +8,18 @@
     display: flex;
     margin-right: 16px;
     margin-left: 0;
-    box-shadow: 0 0 2px 0 @success-color, inset 0 0 2px 0 @success-color;
     border-radius: @border-radius-base;
-    border: 1px solid @success-color;
   }
 
   .label {
     padding: 8px;
-    background-color: fade(@success-color, 60%);
     font-weight: 500;
     color: #fff;
     font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-top-left-radius: @border-radius-base;
-    border-bottom-left-radius: @border-radius-base;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+    text-shadow: 2px 2px 2px var(--text-shadow-color);
   }
 
   .value {
@@ -34,67 +29,54 @@
     flex-direction: column;
     min-width: 86px;
     padding: 8px;
-    color: @success-color;
     text-align: center;
 
     > div:first-child {
       width: 100%;
       font-weight: 500;
-      border-bottom: 1px solid fade(@success-color, 30%);
     }
+  }
+
+  .label, .value, .value > div, .item {
+    transition-duration: @transition-duration;
+    transition-timing-function: @transition-timing-function;
+  }
+
+  .label, .value, .item {
+    transition-property: box-shadow, background-color, border-color, color;
   }
 
   .success {
-    box-shadow: 0 0 2px 0 @success-color, inset 0 0 2px 0 @success-color;
-    border: 1px solid @success-color;
-
-    .label {
-      background-color: fade(@success-color, 60%);
-      border-right: 1.5px solid fade(@success-color, 75%);
-    }
-
-    .value {
-      color: @success-color;
-    }
-
-    > div:first-child {
-      border-bottom: 1px solid fade(@success-color, 30%);
-    }
+    .coverage-type(--success-color);
   }
 
   .warning {
-    box-shadow: 0 0 2px 0 @warning-color, inset 0 0 2px 0 @warning-color;
-    border: 1px solid @warning-color;
-
-    .label {
-      background-color: fade(@warning-color, 60%);
-      border-right: 1.5px solid fade(@warning-color, 75%);
-    }
-
-    .value {
-      color: @warning-color;
-    }
-
-    > div:first-child {
-      border-bottom: 1px solid fade(@warning-color, 30%);
-    }
+    .coverage-type(--warning-color);
   }
 
   .error {
-    box-shadow: 0 0 2px 0 @error-color, inset 0 0 2px 0 @error-color;
-    border: 1px solid @error-color;
+    .coverage-type(--error-color);
+  }
+}
 
-    .label {
-      background-color: fade(@error-color, 60%);
-      border-right: 1.5px solid fade(@error-color, 75%);
-    }
+.coverage-type(@type) {
+  box-shadow: 0 0 2px 0 var(@type), inset 0 0 2px 0 var(@type);
+  border: 1px solid var(@type);
 
-    .value {
-      color: @error-color;
-    }
+  .label {
+    background-color: var(@type);
+    border-right: 1.5px solid var(@type);
+  }
+
+  .value {
+    color: var(@type);
 
     > div:first-child {
-      border-bottom: 1px solid fade(@error-color, 30%);
+      border-bottom: 1px solid var(@type);
+    }
+
+    > div {
+      transition-property: box-shadow, background-color, border-color;
     }
   }
 }

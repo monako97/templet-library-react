@@ -1,22 +1,10 @@
-/* stylelint-disable value-no-vendor-prefix */
+@import url('./theme.less');
+
 body {
-  --table-th-bg: #aaa;
-  --table-border-color: #ddd;
   overflow-y: auto;
 }
 
 body,
 html {
-  user-select: auto !important;
-}
-
-// stylelint-disable-next-line selector-class-pattern
-.neko__markdown-box table {
-  /*! autoprefixer: ignore next */
-  width: -moz-available;
-}
-
-:root {
-  --ant-primary-color: @primary-color;
-  --ant-primary-1: @primary-1;
+  user-select: auto;
 }

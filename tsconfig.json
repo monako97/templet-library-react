@@ -35,7 +35,8 @@
     "alwaysStrict": true,
     "traceResolution": false,
     "lib": ["es2016", "DOM"],
-    "typeRoots": ["node_modules/@types", "typings"]
+    "typeRoots": ["node_modules/@types", "typings"],
+    "types": ["node", "jest", "@testing-library/jest-dom"]
   },
   "exclude": ["node_modules"]
 }

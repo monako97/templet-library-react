@@ -1,9 +1,6 @@
 import React, { useMemo } from 'react';
 import { projectBasicInfo, useLocation, useOutlet } from 'plugin-runtime';
 import styles from './index.less';
-import { ConfigProvider } from 'antd';
-
-ConfigProvider.config(projectBasicInfo.providerConfig);
 
 const projectCoverage = projectBasicInfo.coverage[projectBasicInfo.programInfo.name] || {};
 
@@ -17,7 +14,6 @@ const conf: Record<CoverageType, string> = {
 const Coverage: React.FC = () => {
   const readme = useOutlet();
   const location = useLocation();
-
   const coverage = useMemo(() => {
     const compCoverage = projectBasicInfo.coverage[location.pathname.substring(1)] || {};
 

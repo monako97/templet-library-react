@@ -1,6 +1,6 @@
 .snapshot {
-  border: 1px solid @border-color-base;
-  border-radius: @border-radius-base;
+  border: 1px solid var(--border-color-base, @border-color-base);
+  border-radius: var(--border-radius-base, @border-radius-base);
   margin-bottom: @distance;
 
   &:last-child {
@@ -11,8 +11,9 @@
 .preview {
   padding: @distance;
   text-align: right;
-  width: 100%;    
-  box-shadow: 0 1px 0 @border-color-base;
+  max-width: 100%;
+  box-shadow: 0 1px 0 var(--border-color-base, @border-color-base);
+  background-color: var(--preview-bg, @component-background);
 
   .view {
     text-align: left;
@@ -27,7 +28,7 @@
   cursor: pointer;
   float: right;
   margin-left: 8px;
-  border-radius: @border-radius-base;
+  border-radius: @border-radius-base @border-radius-base 0 0;
   user-select: none;
 
   &:hover,
@@ -38,5 +39,16 @@
 }
 
 .code {
-  padding: 0 @distance;
+  padding: @distance;
+  background-color: var(--preview-code-bg);
+
+  :global(.markdown-box), pre {
+    margin: 0;
+  }
+}
+
+.snapshot, .preview, .toolbar, .code {
+  transition-duration: @transition-duration;
+  transition-timing-function: @transition-timing-function;
+  transition-property: border-color, background-color, box-shadow;
 }

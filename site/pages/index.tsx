@@ -1,12 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { projectBasicInfo, useLocation, useOutlet } from 'plugin-runtime';
+import { useLocation, useOutlet } from 'plugin-runtime';
 import styles from './index.less';
-import { ConfigProvider, BackTop } from 'antd';
-import zh_CN from 'antd/es/locale/zh_CN';
+import { BackTop } from 'neko-ui';
 import Sider from '../components/sider';
 import Coverage from '@/components/coverage';
-
-ConfigProvider.config(projectBasicInfo.providerConfig);
+import Header from '@/components/header';
 
 const App: React.FC = () => {
   const box = useRef<HTMLElement>(null);
@@ -18,20 +16,19 @@ const App: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <ConfigProvider {...projectBasicInfo.providerConfig} locale={zh_CN}>
-      <div className={styles.layout}>
-        <Sider />
-        <article className={styles.container}>
-          <main>
-            <article className={styles.readme} ref={box}>
-              <Coverage />
-              {readme}
-            </article>
+    <div className={styles.layout}>
+      <Sider />
+      <article className={styles.container}>
+        <Header />
+        <main>
+          <article className={styles.readme} ref={box}>
+            <Coverage />
+            {readme}
             <BackTop target={() => box.current || document.body} />
-          </main>
-        </article>
-      </div>
-    </ConfigProvider>
+          </article>
+        </main>
+      </article>
+    </div>
   );
 };
 

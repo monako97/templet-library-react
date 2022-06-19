@@ -11,7 +11,6 @@ declare module './index.less' {
   export default styles;
 }
 
-declare module 'react-hooks-widget/lib/utils';
 declare module 'libraryNameTemplate' {
   export * from '@pkg/index';
 }

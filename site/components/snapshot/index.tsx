@@ -62,10 +62,12 @@ const Snapshot: React.FC<{ path: string; lang: string; style?: string; hideSourc
           </div>
         )}
       </div>
-      <div className={styles.code}>
-        {code && <CodeBlock code={code as string} lang={lang} />}
-        {styleCode && <CodeBlock code={styleCode as string} lang="css" />}
-      </div>
+      {(code || styleCode) && (
+        <div className={styles.code}>
+          {code && <CodeBlock code={code as string} lang={lang} />}
+          {styleCode && <CodeBlock code={styleCode as string} lang="css" />}
+        </div>
+      )}
     </div>
   );
 };

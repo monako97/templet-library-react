@@ -30,23 +30,11 @@ export default {
     '<rootDir>/node_modules/',
     'iconfont.js',
   ],
-  transformIgnorePatterns: [
-    '<rootDir>/lib/',
-    '<rootDir>/es/',
-    '<rootDir>/dist/',
-    'iconfont.js',
-  ],
+  transformIgnorePatterns: ['<rootDir>/lib/', '<rootDir>/es/', '<rootDir>/dist/', 'iconfont.js'],
   transform: {
     '^.+\\.(t|j)sx?$': '@swc/jest',
   },
-  setupFilesAfterEnv: [
-    // 跳过自动清理
-    '<rootDir>/node_modules/@testing-library/react-hooks/dont-cleanup-after-each.js',
-    // 禁用错误过滤功能
-    '<rootDir>/node_modules/@testing-library/react-hooks/disable-error-filtering.js',
-    '<rootDir>/node_modules/jest-enzyme/lib/index.js',
-    '<rootDir>/test/setup.ts',
-  ],
+  setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
   testMatch: [
     '<rootDir>/components/**/__tests__/**/*.{js,jsx,ts,tsx}',
     '<rootDir>/site/**/__tests__/**/*.{js,jsx,ts,tsx}',

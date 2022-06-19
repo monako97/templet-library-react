@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { myPkgs, projectBasicInfo, RouterProps, useLocation, useNavigate } from 'plugin-runtime';
 import styles from './index.less';
+import { isEqual } from 'lodash';
 
 type MenuType = {
   subtitle?: string;
@@ -104,4 +105,4 @@ const Sider = () => {
   );
 };
 
-export default Sider;
+export default React.memo(Sider, isEqual);
