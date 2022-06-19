@@ -5,6 +5,7 @@ import { BackTop } from 'neko-ui';
 import Sider from '../components/sider';
 import Coverage from '@/components/coverage';
 import Header from '@/components/header';
+import Footer from '@/components/footer';
 
 const App: React.FC = () => {
   const box = useRef<HTMLElement>(null);
@@ -25,6 +26,7 @@ const App: React.FC = () => {
             <Coverage />
             {readme}
             <BackTop target={() => box.current || document.body} />
+            <Footer />
           </article>
         </main>
       </article>
