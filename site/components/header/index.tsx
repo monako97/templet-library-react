@@ -1,16 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
-import { useTheme } from 'neko-ui/es/utils/use-theme';
-import styles from './index.less';
 import { myPkgs, useLocation } from 'plugin-runtime';
+import { useTheme } from 'neko-ui/es/utils/use-theme';
 import { isEqual } from 'lodash';
+import { PkgType, projectInfo } from '@/utils';
+import styles from './index.less';
 
-type PkgType =
-  | {
-      subtitle: string;
-      title: string;
-      type: string;
-    }
-  | undefined;
 const Header = () => {
   const location = useLocation();
   const { type, setType } = useTheme();
@@ -22,7 +16,9 @@ const Header = () => {
     document.body.setAttribute('data-theme', type);
   }, [type]);
   const current: PkgType = useMemo(
-    () => myPkgs.find((item) => item.key === location.pathname.substring(1)) as PkgType,
+    () =>
+      (myPkgs.find((item) => item.key === location.pathname.substring(1)) as unknown as PkgType) ||
+      projectInfo,
     [location.pathname]
   );
 

@@ -6,6 +6,7 @@ import Sider from '../components/sider';
 import Coverage from '@/components/coverage';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import Empty from '@/components/empty';
 
 const App: React.FC = () => {
   const box = useRef<HTMLElement>(null);
@@ -22,9 +23,9 @@ const App: React.FC = () => {
       <article className={styles.container}>
         <Header />
         <main>
-          <article className={styles.readme} ref={box}>
+          <article className={[styles.readme, !readme && styles.empty].join(' ')} ref={box}>
             <Coverage />
-            {readme}
+            {readme || <Empty />}
             <BackTop target={() => box.current || document.body} />
             <Footer />
           </article>

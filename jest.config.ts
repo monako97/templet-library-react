@@ -8,29 +8,25 @@ import globals from 'plugin-runtime/build/envFlags';
  * Lines 行覆盖率(line coverage): 是不是每一行都执行了?
  */
 
+const ignore = [
+  '<rootDir>/test/',
+  '<rootDir>/lib/',
+  '<rootDir>/es/',
+  '<rootDir>/dist/',
+  '<rootDir>/node_modules/',
+  'iconfont.js',
+];
+
 export default {
   automock: false,
   clearMocks: true,
   coverageDirectory: 'coverage',
   testEnvironment: 'jsdom',
   roots: ['components'],
-  coveragePathIgnorePatterns: [
-    '<rootDir>/test/',
-    '<rootDir>/lib/',
-    '<rootDir>/es/',
-    '<rootDir>/dist/',
-    '<rootDir>/node_modules/',
-  ],
+  coveragePathIgnorePatterns: ignore,
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
-  testPathIgnorePatterns: [
-    '<rootDir>/test/',
-    '<rootDir>/lib/',
-    '<rootDir>/es/',
-    '<rootDir>/dist/',
-    '<rootDir>/node_modules/',
-    'iconfont.js',
-  ],
-  transformIgnorePatterns: ['<rootDir>/lib/', '<rootDir>/es/', '<rootDir>/dist/', 'iconfont.js'],
+  testPathIgnorePatterns: ignore,
+  transformIgnorePatterns: ignore,
   transform: {
     '^.+\\.(t|j)sx?$': '@swc/jest',
   },
