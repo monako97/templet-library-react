@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { myPkgs, projectBasicInfo, RouterProps, useLocation, useNavigate } from 'plugin-runtime';
+import { myPkgs, RouterProps, useLocation, useNavigate } from 'plugin-runtime';
 import styles from './index.less';
 import { isEqual } from 'lodash';
+import { projectInfo } from '@/utils';
 
 type MenuType = {
   subtitle?: string;
@@ -90,8 +91,8 @@ const Sider = () => {
       <div className={styles.logo}>
         <div className={styles.logoImg} onClick={() => navigate('/')} />
         <div className={styles.logoCon}>
-          <h2>{projectBasicInfo.projectName.replace('-', ' ')}</h2>
-          <p>{projectBasicInfo.programInfo.description}</p>
+          <h2>{projectInfo.title}</h2>
+          <p>{projectInfo.description}</p>
         </div>
       </div>
       <div className={styles.sider}>
