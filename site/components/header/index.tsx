@@ -1,21 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
+import { myPkgs, useLocation } from 'plugin-runtime';
 import { useTheme } from 'neko-ui/es/utils/use-theme';
-import styles from './index.less';
-import { myPkgs, projectBasicInfo, useLocation } from 'plugin-runtime';
 import { isEqual } from 'lodash';
+import { PkgType, projectInfo } from '@/utils';
+import styles from './index.less';
 
-type PkgType =
-  | {
-      subtitle: string;
-      title: string;
-      type?: string;
-    }
-  | undefined;
-
-const projectInfo = {
-  subtitle: projectBasicInfo.programInfo.description,
-  title: projectBasicInfo.projectName.replace(/-/g, ' '),
-};
 const Header = () => {
   const location = useLocation();
   const { type, setType } = useTheme();
@@ -28,7 +17,7 @@ const Header = () => {
   }, [type]);
   const current: PkgType = useMemo(
     () =>
-      (myPkgs.find((item) => item.key === location.pathname.substring(1)) as PkgType) ||
+      (myPkgs.find((item) => item.key === location.pathname.substring(1)) as unknown as PkgType) ||
       projectInfo,
     [location.pathname]
   );
