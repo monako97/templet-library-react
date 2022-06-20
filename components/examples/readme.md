@@ -74,3 +74,19 @@ import { WaveCircle } from 'neko-ui';
 
 
 ```
+
+## 编译
+
+```shell
+npm run build
+```
+
+## 发布到npm
+
+```shell
+# 需要先登录您的npm账户
+npm login
+# ...
+npm publish
+
+```
