@@ -2,61 +2,69 @@
   display: flex;
   padding: 2px;
   max-width: 1000px;
+  width: 100%;
+  flex-wrap: wrap;
   margin: auto;
+}
 
-  .item {
-    display: flex;
-    margin-right: 16px;
-    margin-left: 0;
-    border-radius: @border-radius-base;
-  }
+.item {
+  display: flex;
+  margin-right: 16px;
+  margin-left: 0;
+  margin-bottom: 16px;
+  border-radius: @border-radius-base;
+}
 
-  .label {
-    padding: 8px;
+.label,
+.value {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  font-weight: 500;
+  color: #fff;
+  font-size: 16px;
+  text-shadow: 2px 2px 2px var(--text-shadow-color);
+}
+
+.value {
+  flex-direction: column;
+  min-width: 86px;
+  text-align: center;
+
+  > div:first-child {
+    width: 100%;
     font-weight: 500;
-    color: #fff;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-shadow: 2px 2px 2px var(--text-shadow-color);
   }
+}
 
-  .value {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    min-width: 86px;
-    padding: 8px;
-    text-align: center;
+.label,
+.value,
+.value > div,
+.item {
+  transition-duration: @transition-duration;
+  transition-timing-function: @transition-timing-function;
+}
 
-    > div:first-child {
-      width: 100%;
-      font-weight: 500;
-    }
-  }
+.label,
+.value,
+.item {
+  transition-property: box-shadow, background-color, border-color, color;
+}
 
-  .label, .value, .value > div, .item {
-    transition-duration: @transition-duration;
-    transition-timing-function: @transition-timing-function;
-  }
+.success {
+  .coverage-type(--success-color);
+}
 
-  .label, .value, .item {
-    transition-property: box-shadow, background-color, border-color, color;
-  }
+.warning {
+  .coverage-type(--warning-color);
+}
 
-  .success {
-    .coverage-type(--success-color);
-  }
-
-  .warning {
-    .coverage-type(--warning-color);
-  }
-
-  .error {
-    .coverage-type(--error-color);
-  }
+.error {
+  .coverage-type(--error-color);
 }
 
 .coverage-type(@type) {
