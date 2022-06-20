@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { projectBasicInfo, useLocation, useOutlet } from 'plugin-runtime';
 import styles from './index.less';
+import { isEqual } from 'lodash';
 
 const projectCoverage = projectBasicInfo.coverage[projectBasicInfo.programInfo.name] || {};
 
@@ -57,4 +58,4 @@ const Coverage: React.FC = () => {
   );
 };
 
-export default Coverage;
+export default memo(Coverage, isEqual);
