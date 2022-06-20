@@ -27,6 +27,9 @@ const extractMenu = (list: RouterProps[]) => {
         key: item.key,
       }),
     });
+    Object.assign(item, {
+      ...md.basic,
+    });
   });
 };
 
