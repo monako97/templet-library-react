@@ -1,16 +1,21 @@
 import React, { useEffect, useMemo } from 'react';
 import { useTheme } from 'neko-ui/es/utils/use-theme';
 import styles from './index.less';
-import { myPkgs, useLocation } from 'plugin-runtime';
+import { myPkgs, projectBasicInfo, useLocation } from 'plugin-runtime';
 import { isEqual } from 'lodash';
 
 type PkgType =
   | {
       subtitle: string;
       title: string;
-      type: string;
+      type?: string;
     }
   | undefined;
+
+const projectInfo = {
+  subtitle: projectBasicInfo.programInfo.description,
+  title: projectBasicInfo.projectName.replace(/-/g, ' '),
+};
 const Header = () => {
   const location = useLocation();
   const { type, setType } = useTheme();
@@ -22,7 +27,9 @@ const Header = () => {
     document.body.setAttribute('data-theme', type);
   }, [type]);
   const current: PkgType = useMemo(
-    () => myPkgs.find((item) => item.key === location.pathname.substring(1)) as PkgType,
+    () =>
+      (myPkgs.find((item) => item.key === location.pathname.substring(1)) as PkgType) ||
+      projectInfo,
     [location.pathname]
   );
 
