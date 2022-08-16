@@ -25,6 +25,9 @@
   "dependencies": {
     "neko-ui": "^0.0.5"
   },
+  "resolutions": {
+    "terser": "npm:@swc/core"
+  },
   "files": [
     "test",
     "jest.config.ts",
