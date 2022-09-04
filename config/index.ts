@@ -9,6 +9,7 @@ const conf: PartialConfigType = {
   },
   importOnDemand: {
     antd: ['[source]/es/[name:-]', '[source]/es/[name:-]/style'],
+    'neko-ui': '[source]/es/[name]',
     lodash: '[source]/[name]',
     '@ant-design/icons': {
         transform: ({ name, source }) => {
