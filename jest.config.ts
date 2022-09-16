@@ -1,4 +1,4 @@
-import globals from 'plugin-runtime/build/envFlags';
+import globals from 'PackageNameByCore/build/envFlags';
 
 /**
  * 单元测试的几个指标:
@@ -22,7 +22,7 @@ export default {
   clearMocks: true,
   coverageDirectory: 'coverage',
   testEnvironment: 'jsdom',
-  roots: ['components'],
+  roots: ['src'],
   coveragePathIgnorePatterns: ignore,
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   testPathIgnorePatterns: ignore,
@@ -32,7 +32,7 @@ export default {
   },
   setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
   testMatch: [
-    '<rootDir>/components/**/__tests__/**/*.{js,jsx,ts,tsx}',
+    '<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}',
     '<rootDir>/site/**/__tests__/**/*.{js,jsx,ts,tsx}',
   ],
   moduleNameMapper: {

@@ -12,7 +12,7 @@ declare module './index.less' {
 }
 
 declare module 'libraryNameTemplate' {
-  export * from '@pkg/index';
+  export * from 'src/index';
 }
 declare module 'moment' {
   import { Dayjs } from 'dayjs';

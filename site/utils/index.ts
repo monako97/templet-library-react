@@ -1,4 +1,4 @@
-import { projectBasicInfo } from 'plugin-runtime';
+import { projectBasicInfo } from 'PackageNameByCore';
 
 type ProgramInfo = typeof projectBasicInfo.programInfo;
 

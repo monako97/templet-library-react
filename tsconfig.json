@@ -14,7 +14,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["site/*"],
-      "@pkg/*": ["components/*"]
+      "@pkg/*": ["src/*"]
     },
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

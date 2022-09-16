@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { myPkgs, useLocation } from 'plugin-runtime';
+import { myPkgs, useLocation } from 'PackageNameByCore';
 import { useTheme } from 'neko-ui';
 import { isEqual } from 'lodash';
 import { projectInfo } from '@/utils';

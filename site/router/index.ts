@@ -1,4 +1,4 @@
-import { myPkgs } from 'plugin-runtime';
+import { myPkgs } from 'PackageNameByCore';
 
 export default [
   {

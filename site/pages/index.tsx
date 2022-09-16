@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useLocation, useOutlet } from 'plugin-runtime';
+import { useLocation, useOutlet } from 'PackageNameByCore';
 import styles from './index.less';
 import { BackTop } from 'neko-ui';
 import Sider from '../components/sider';
