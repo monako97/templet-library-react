@@ -4,12 +4,9 @@ const conf: PartialConfigType = {
   modifyVars: {},
   miniIdc: false,
   designSize: 1920,
-  minifier: {
-    type: 'terser',
-  },
   importOnDemand: {
     antd: ['[source]/es/[name:-]', '[source]/es/[name:-]/style'],
-    'neko-ui': '[source]/es/[name]',
+    'neko-ui': '[source]/es/[name:-]',
     lodash: '[source]/[name]',
     '@ant-design/icons': {
         transform: ({ name, source }) => {

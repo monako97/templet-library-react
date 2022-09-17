@@ -26,7 +26,7 @@ export default {
   coveragePathIgnorePatterns: ignore,
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   testPathIgnorePatterns: ignore,
-  transformIgnorePatterns: ignore,
+  transformIgnorePatterns: ignore.filter((o) => o !== '<rootDir>/test/'),
   transform: {
     '^.+\\.(t|j)sx?$': '@swc/jest',
   },
