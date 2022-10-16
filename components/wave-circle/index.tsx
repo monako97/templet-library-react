@@ -1,5 +1,6 @@
 import React, { HtmlHTMLAttributes } from 'react';
-import { isEqual } from 'lodash';
+import getPrefixCls from '../get-prefix-cls';
+import { classNames, isEqual } from 'PackageNameByCommon';
 import './index.global.less';
 
 export interface WaveCircleProps extends HtmlHTMLAttributes<HTMLDivElement> {
@@ -32,12 +33,12 @@ const WaveCircle: React.FC<WaveCircleProps> = ({
   return (
     <div
       {...props}
-      className={['wave-circles', className].join(' ')}
+      className={classNames([getPrefixCls('wave-circles'), className])}
       style={prefixStyles() as React.CSSProperties}
     >
-      <i className="wave-circle" />
-      <i className="wave-circle" />
-      <i className="wave-circle" />
+      <i className={getPrefixCls('wave-circle')} />
+      <i className={getPrefixCls('wave-circle')} />
+      <i className={getPrefixCls('wave-circle')} />
       {children}
     </div>
   );

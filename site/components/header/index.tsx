@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { myPkgs, useLocation } from 'PackageNameByCore';
 import { useTheme } from 'neko-ui';
-import { isEqual } from 'lodash';
+import { isEqual } from 'PackageNameByCommon';
 import { projectInfo } from '@/utils';
 import type { PkgType } from '@/utils';
 import styles from './index.less';

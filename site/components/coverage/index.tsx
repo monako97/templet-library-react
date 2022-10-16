@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react';
 import { projectBasicInfo, useLocation, useOutlet } from 'PackageNameByCore';
 import styles from './index.less';
-import { isEqual } from 'lodash';
+import { isEqual } from 'PackageNameByCommon';
 
 const projectCoverage = projectBasicInfo.coverage[projectBasicInfo.programInfo.name] || {};
 
@@ -16,7 +16,8 @@ const Coverage: React.FC = () => {
   const readme = useOutlet();
   const location = useLocation();
   const coverage = useMemo(() => {
-    const compCoverage = projectBasicInfo.coverage[location.pathname.substring(1)] || {};
+    const name = location.pathname.substring(1);
+    const compCoverage = projectBasicInfo.coverage[name] || {};
 
     return readme === null ? projectCoverage : compCoverage;
   }, [location.pathname, readme]);
@@ -25,6 +26,7 @@ const Coverage: React.FC = () => {
     <div className={styles.coverage}>
       {Object.keys(conf).map((k) => {
         if (location.pathname === '/examples') return null;
+        if (location.pathname.startsWith('/@moneko')) return null;
         const cover = coverage[k as CoverageType],
           covered = coverage[`covered${k}` as CoverageType],
           coverNum = Math.round((parseFloat(covered) / parseFloat(cover)) * 100) || 0;

@@ -12,6 +12,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@codesandbox/sandpack-react": "^1.14.2",
     "@swc/jest": "^0.2.21",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
@@ -31,6 +32,7 @@
   "files": [
     "test",
     "jest.config.ts",
+    "codesandbox",
     "config",
     "components",
     "typings",

@@ -11,6 +11,10 @@ declare module './index.less' {
   export default styles;
 }
 
+declare module '*?raw' {
+  export default string;
+}
+
 declare module 'libraryNameTemplate' {
   export * from 'components/index';
 }

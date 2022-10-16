@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { myPkgs, RouterProps, useLocation, useNavigate } from 'PackageNameByCore';
 import styles from './index.less';
-import { isEqual } from 'lodash';
+import { isEqual } from 'PackageNameByCommon';
 import { projectInfo } from '@/utils';
 import { Avatar } from 'neko-ui';
 
