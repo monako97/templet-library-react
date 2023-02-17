@@ -35,6 +35,7 @@ root_folder/
 |-- package.json
 |-- README.md
 |-- site/
+|-- tailwind.config.js
 |-- tsconfig.json
 `-- typings
     `-- typings.d.ts

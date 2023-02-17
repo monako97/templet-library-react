@@ -6,7 +6,7 @@ const conf: PartialConfigType = {
   publicPath: DEV ? '/' : './',
   routerMode: 'hash',
   htmlPluginOption: {
-    favicon: './site/assets/images/favicon.ico',
+    // favicon: './site/assets/images/favicon.ico',
   },
   miniIdc: false,
   designSize: 1920,
