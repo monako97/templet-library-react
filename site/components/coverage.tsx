@@ -94,6 +94,7 @@ const Coverage: FC = () => {
   );
 
   if (location.pathname === '/examples') return null;
+  if (location.pathname === '/fap') return null;
   return (
     <div className="site-coverage">
       {Object.keys(conf).map((k) => {
