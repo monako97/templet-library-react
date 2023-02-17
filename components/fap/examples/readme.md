@@ -131,8 +131,8 @@ import DemoRaw from './examples/default.jsx?raw';
 ### 这是 md
 
 // 这是 jsx
-// neko-ui 这里表示的是当前项目 package.json 中的 name
-import { Tag } from 'neko-ui';
+// libraryNameTemplate 这里表示的是当前项目 package.json 中的 name
+import { Tag } from 'libraryNameTemplate';
 
 <div style={{ display: 'flex', height: 288 }}>
     <Tag>默认</Tag>
