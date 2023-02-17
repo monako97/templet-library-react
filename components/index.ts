@@ -1,5 +1,15 @@
-export { default as WaveCircle } from './wave-circle';
-export type { WaveCircleProps } from './wave-circle';
-export { default as getPrefixCls } from './get-prefix-cls';
+import { injectGlobal } from '@emotion/css';
+import { getColorVariableString } from 'PackageNameByCommon';
 
-import './get-prefix-cls/index.less';
+export { default as WaveCircle, type WaveCircleProps } from './wave-circle';
+
+injectGlobal([
+    `:root {
+      ${getColorVariableString('#faad14', { name: 'primary' })}
+    }
+  
+    :root[data-theme='dark'] {
+      ${getColorVariableString('#bb8314', { name: 'primary', theme: 'dark' })}
+    }`,
+]);
+  

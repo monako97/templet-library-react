@@ -1,45 +1,108 @@
-import React, { useEffect, useRef } from 'react';
+import React, { type FC, useEffect, useRef, memo } from 'react';
+import { css, injectGlobal } from '@emotion/css';
 import { useLocation, useOutlet } from 'PackageNameByCore';
 import { BackTop } from 'neko-ui';
-import Sider from '../components/sider';
 import Coverage from '@/components/coverage';
-import Header from '@/components/header';
-import Footer from '@/components/footer';
 import Empty from '@/components/empty';
-import './index.global.less';
-import { classNames } from 'PackageNameByCommon';
+import Footer from '@/components/footer';
+import Header from '@/components/header';
+import Sider from '@/components/sider';
 
-const App: React.FC = () => {
-  const box = useRef<HTMLElement>(null);
+const waveBg = css`
+  #doc-body {
+    z-index: 10;
+    display: flex;
+    overflow-y: auto;
+    padding-top: 86px;
+    padding-right: 16px;
+    height: 100%;
+    max-height: 100vh;
+    flex: 1;
+  }
+
+  .site-doc-main {
+    padding-bottom: 96px;
+    width: calc(100% - 272px);
+  }
+
+  .site-doc-main-box {
+    box-sizing: border-box;
+    min-height: calc(100vh - 212px);
+  }
+
+  .site-wave-bg {
+    position: absolute;
+    top: 80%;
+    left: -200%;
+    border-radius: 47%;
+    width: 500vw;
+    height: 500vw;
+    background: var(--primary-color, #5794ff);
+    opacity: 0.4;
+    transform-origin: center;
+    animation: site-wave-effect 30s infinite linear;
+    pointer-events: none;
+  }
+
+  .site-wave-bg::after,
+  .site-wave-bg::before {
+    position: absolute;
+    display: block;
+    border-radius: 46.5%;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-color, #5794ff);
+    opacity: 0.6;
+    content: '';
+    animation: site-wave-effect 35s infinite linear;
+  }
+
+  .site-wave-bg::before {
+    border-radius: 46%;
+    background: var(--primary-color, #5794ff);
+    opacity: 0.1;
+    animation: site-wave-effect 40s infinite linear;
+  }
+
+  @keyframes site-wave-effect {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+injectGlobal([waveBg]);
+
+const App: FC = () => {
+  const box = useRef<HTMLDivElement>(null);
   const readme = useOutlet();
   const location = useLocation();
+  const num = useRef<number>(0);
 
   useEffect(() => {
+    num.current++;
     box.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
 
   return (
-    <div className={getPrefixCls('site-layout')}>
-      <Sider />
-      <article className={getPrefixCls('site-container')}>
-        <Header />
-        <main>
-          <article
-            className={classNames([
-              getPrefixCls('site-readme'),
-              !readme && getPrefixCls('site-empty'),
-            ])}
-            ref={box}
-          >
-            <Coverage />
-            {readme || <Empty />}
-            <Footer />
-          </article>
+    <>
+      <i className="site-wave-bg n-flex" />
+      <Header />
+      <div ref={box} id="doc-body">
+        <Sider />
+        <main className="site-doc-main">
+          <Coverage />
+          {readme ? <div className="site-doc-main-box">{readme}</div> : <Empty />}
+          <Footer />
         </main>
-      </article>
+      </div>
       <BackTop target={() => box.current || document.body} />
-    </div>
+    </>
   );
 };
 
-export default App;
+export default memo(App, () => true);

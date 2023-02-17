@@ -1,17 +1,8 @@
 export const basic = {
-    type: '开始',
-    title: '说明',
-    subtitle: '注意事项',
-}
+  type: '开始',
+  title: '说明及注意事项',
+  icon: '😋',
+};
+import readme from './examples/readme.md';
 
-#### 目录结构说明
-
-import CodeBlock from '@/components/code';
-import structure from './structure.txt';
-
-<CodeBlock code={structure} lang="treeview" />
-
-import MD from '@/components/markdown';
-import readme from './readme.md?raw';
-
-<MD text={readme} />
+<Box text={readme} />

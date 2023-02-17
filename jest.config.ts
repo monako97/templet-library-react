@@ -1,4 +1,7 @@
+import type { Config } from 'jest';
 import globals from 'PackageNameByCore/build/envFlags';
+
+const { name } = JSON.parse(globals.programInfo);
 
 /**
  * 单元测试的几个指标:
@@ -13,11 +16,10 @@ const ignore = [
   '<rootDir>/lib/',
   '<rootDir>/es/',
   '<rootDir>/dist/',
+  '<rootDir>/docs/',
   '<rootDir>/node_modules/',
-  'iconfont.js',
 ];
-
-export default {
+const config: Config = {
   automock: false,
   clearMocks: true,
   coverageDirectory: 'coverage',
@@ -26,11 +28,13 @@ export default {
   coveragePathIgnorePatterns: ignore,
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   testPathIgnorePatterns: ignore,
-  transformIgnorePatterns: ignore.filter((o) => o !== '<rootDir>/test/'),
+  transformIgnorePatterns: ignore.filter((o) => !['<rootDir>/test/'].includes(o)),
   transform: {
     '^.+\\.(t|j)sx?$': '@swc/jest',
   },
-  setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
+  setupFilesAfterEnv: [
+    '<rootDir>/test/setup.ts',
+  ],
   testMatch: [
     '<rootDir>/components/**/__tests__/**/*.{js,jsx,ts,tsx}',
     '<rootDir>/site/**/__tests__/**/*.{js,jsx,ts,tsx}',
@@ -39,7 +43,10 @@ export default {
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       '<rootDir>/test/file.mock.ts',
     '\\.(css|less)$': 'identity-obj-proxy',
-    'iconfont.js$': '<rootDir>/test/file.mock.ts',
+    '\\?raw$': '<rootDir>/test/file.mock.ts',
+    [name]: '<rootDir>/components/index.ts',
   },
   globals: globals,
 };
+
+export default config;
