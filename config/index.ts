@@ -12,20 +12,13 @@ const conf: PartialConfigType = {
   designSize: 1920,
   fallbackCompPath: '@/components/fallback',
   externals: [/(.+)\/__tests__\/(.+)/i],
-  swcrc: {
-    jsc: {
-      experimental: {
-        plugins: [
-          [
-            '@swc/plugin-transform-imports',
-            {
-              lodash: {
-                transform: 'lodash/{{member}}',
-              },
-            },
-          ],
-        ],
-      },
+  importOnDemand: {
+    'neko-ui': {
+      transform: 'neko-ui/es/${member}',
+      memberTransformers: ['dashed_case'],
+    },
+    lodash: {
+      transform: 'lodash/${member}',
     },
   },
 };
