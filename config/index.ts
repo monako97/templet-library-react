@@ -10,6 +10,7 @@ const conf: PartialConfigType = {
   },
   miniIdc: false,
   designSize: 1920,
+  bundleAnalyzer: false,
   fallbackCompPath: '@/components/fallback',
   externals: [/(.+)\/__tests__\/(.+)/i],
   importOnDemand: {
