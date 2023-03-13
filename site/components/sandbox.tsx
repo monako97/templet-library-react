@@ -1,18 +1,19 @@
-import React, { useState, FC, useEffect, memo } from 'react';
+import React, { useState, type FC, useEffect, memo, useCallback, useMemo } from 'react';
 import { css, injectGlobal } from '@emotion/css';
-import { isEqual } from 'PackageNameByCommon';
+import { classNames, isEqual } from 'PackageNameByCommon';
 import { mdxComponents, type ExampleModule } from 'PackageNameByCore';
 import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'PackageNameByReactLive';
-import { Prism } from 'neko-ui';
+import { Markdown, Prism } from 'neko-ui';
 
 const sandboxCss = css`
   .sandbox-box {
     break-inside: avoid;
     box-sizing: border-box;
-    padding-bottom: 16px;
+    padding-bottom: 1rem;
   }
 
   .sandbox-container,
+  .sandbox-info,
   .sandbox-view,
   .sandbox-btn,
   .sandbox-live-editor {
@@ -21,58 +22,90 @@ const sandboxCss = css`
   }
 
   .sandbox-container,
-  .sandbox-view,
+  .sandbox-info,
   .sandbox-live-editor {
     transition-property: border-color;
-    border: 1px solid var(--border-color-base, #d9d9d9);
+    border: var(--border-base);
   }
 
   .sandbox-container {
-    border-radius: var(--border-radius-base);
+    border-radius: var(--border-radius, 8px);
+  }
+
+  fieldset {
+    padding: 0.5rem 1rem 0;
   }
 
   .sandbox-title {
-    margin: 8px 0 !important;
-    padding: 0 16px;
+    padding: 0 0.5rem;
+    font-size: 14px;
     font-weight: 500;
   }
 
   .sandbox-view {
     position: relative;
-    border-width: 1px 0 0;
-    padding: 16px 16px 32px;
+    padding-bottom: 2rem;
+    padding-inline: 0.5rem;
+  }
+
+  .sandbox-view > div {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .sandbox-view pre:first-of-type {
+    margin-top: 0.5rem;
+  }
+
+  .sandbox-info {
+    border: var(--border-base);
+    border-style: dotted;
+    border-width: 0.0625rem 0 0;
+    margin-inline: -1rem;
+    padding: 0 1rem 0.5rem;
+  }
+
+  .sandbox-info .sandbox-title::before {
+    content: none;
+  }
+
+  .sandbox-description {
+    padding: 0 8px;
+  }
+
+  .sandbox-description p:first-of-type {
+    margin-top: 4px;
+  }
+
+  .sandbox-description p:last-of-type {
+    margin-bottom: 4px;
   }
 
   .sandbox-btn {
     position: absolute;
-    right: 0;
+    right: -16px;
     bottom: 0;
-    padding: 4px;
+    padding: 0.25rem;
     width: fit-content;
-    font-size: 12px;
+    font-size: var(--font-size-sm, 12px);
     cursor: pointer;
-    border-top-left-radius: var(--border-radius-base);
-    line-height: 16px;
+    border-top-left-radius: var(--border-radius, 8px);
+    line-height: 1rem;
     user-select: none;
     transition-property: background-color, color, transform;
   }
 
   .sandbox-btn::after {
     display: inline-block;
-    font-size: 8px;
+    font-size: var(--font-size-xs, 10px);
     font-family: neko-icon, sans-serif;
-    text-indent: 4px;
-    content: '\\e644';
+    text-indent: 0.25rem;
+    content: '\\e63e';
   }
 
   .sandbox-btn:active {
     transform: scale(0.95);
-  }
-
-  .sandbox-btn:hover::after,
-  .sandbox-btn[data-open='true']::after {
-    font-size: 10px;
-    content: '\\e63e';
   }
 
   .sandbox-btn[data-open='true'] {
@@ -83,14 +116,21 @@ const sandboxCss = css`
   .sandbox-btn[data-open='false'] {
     color: var(--primary-color, #5794ff);
     background-color: var(--primary-color-bg, #f0f8ff);
-    border-bottom-right-radius: var(--border-radius-base);
+    border-bottom-right-radius: var(--border-radius, 8px);
+  }
+
+  .sandbox-btn.sandbox-btn-desc {
+    transform: translateY(13px);
+    border-bottom-right-radius: 0;
   }
 
   .sandbox-live-editor {
-    --code-color: var(--text-color);
+    --code-color: var(--text-color, rgb(0 0 0 / 65%));
 
-    border-width: 1px 0 0;
-    padding: 16px;
+    border-style: dotted;
+    border-width: 0.0625rem 0 0;
+    padding: 1rem;
+    margin-inline: -1rem;
   }
 
   .sandbox-live-editor.hide {
@@ -104,9 +144,19 @@ const sandboxCss = css`
 
 injectGlobal([sandboxCss]);
 
-const Sandbox: FC<ExampleModule> = ({ soucre, title }) => {
-  const [init, setInit] = useState<boolean>(false);
-  const [open, setOpen] = useState<boolean>(false);
+const Sandbox: FC<ExampleModule> = ({ title, description, ...props }) => {
+  const [init, setInit] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleOpen = useCallback(
+    function () {
+      if (!init) {
+        setInit(true);
+      }
+      setOpen(!open);
+    },
+    [init, open]
+  );
+  const hasDesc = useMemo(() => description?.trim().length, [description]);
 
   useEffect(() => {
     return () => {
@@ -116,38 +166,40 @@ const Sandbox: FC<ExampleModule> = ({ soucre, title }) => {
 
   return (
     <LiveProvider
-      code={soucre}
+      {...props}
       scope={mdxComponents}
-      language="tsx"
       theme={{
         plain: {},
         styles: [],
       }}
     >
-      <div className="sandbox-box">
-        <div className="sandbox-container">
-          <h4 className="sandbox-title">{title}</h4>
-          <div className="sandbox-view">
+      <section className="sandbox-box">
+        <fieldset className="sandbox-container">
+          <legend className="sandbox-title">{title}</legend>
+          <section className="sandbox-view">
             <LiveError className="sandbox-error-msg" />
             <LivePreview />
             <span
-              className="sandbox-btn"
+              className={classNames('sandbox-btn', hasDesc && 'sandbox-btn-desc')}
               data-open={open}
-              onClick={() => {
-                if (!init) {
-                  setInit(true);
-                }
-                setOpen(!open);
-              }}
+              onClick={handleOpen}
             >
               编辑示例代码
             </span>
-          </div>
+          </section>
+          {hasDesc ? (
+            <fieldset className="sandbox-info">
+              <legend className="sandbox-title">描述</legend>
+              <div className="sandbox-description">
+                <Markdown text={description} />
+              </div>
+            </fieldset>
+          ) : null}
           {init && (
             <LiveEditor className={`sandbox-live-editor ${open ? '' : 'hide'}`} prism={Prism} />
           )}
-        </div>
-      </div>
+        </fieldset>
+      </section>
     </LiveProvider>
   );
 };
