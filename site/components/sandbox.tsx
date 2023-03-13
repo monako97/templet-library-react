@@ -52,6 +52,12 @@ const sandboxCss = css`
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .sandbox-view .n-md-box,
+  .sandbox-view pre {
+    width: 100%;
   }
 
   .sandbox-view pre:first-of-type {
