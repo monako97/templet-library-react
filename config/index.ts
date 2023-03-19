@@ -14,12 +14,15 @@ const conf: PartialConfigType = {
   fallbackCompPath: '@/components/fallback',
   externals: [/(.+)\/__tests__\/(.+)/i],
   importOnDemand: {
+    '@moneko/common': {
+      transform: 'lib/${member}',
+    },
     'neko-ui': {
-      transform: 'neko-ui/es/${member}',
+      transform: 'es/${member}',
       memberTransformers: ['dashed_case'],
     },
     lodash: {
-      transform: 'lodash/${member}',
+      transform: '${member}',
     },
   },
 };
