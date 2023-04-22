@@ -121,7 +121,7 @@ const sandboxCss = css`
 
   .sandbox-btn[data-open='false'] {
     color: var(--primary-color, #5794ff);
-    background-color: var(--primary-color-bg, #f0f8ff);
+    background-color: var(--primary-bg, #f0f8ff);
     border-bottom-right-radius: var(--border-radius, 8px);
   }
 
