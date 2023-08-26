@@ -1,6 +1,6 @@
 {
   "name": "templet-library-react",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "组件库模板",
   "main": "lib/index.js",
   "scripts": {},
@@ -10,8 +10,7 @@
     "neko-ui": "^2.3.0",
     "n-code-live": "^1.0.6"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "resolutions": {
     "terser": "npm:@swc/core"
   },
