@@ -1,9 +1,11 @@
-import { myPkgs } from 'PackageNameByCore';
+import { lazy } from 'react';
+import type { RouteConfig } from '@app/routes';
 
-export default [
+const router: RouteConfig[] = [
   {
-    path: '*',
-    root: true,
-    children: myPkgs,
+    path: '/',
+    element: lazy(() => import('@/layout')),
   },
 ];
+
+export default router;

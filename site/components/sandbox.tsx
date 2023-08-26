@@ -1,213 +1,182 @@
-import React, { useState, type FC, useEffect, memo, useCallback, useMemo } from 'react';
-import { css, injectGlobal } from '@emotion/css';
-import { classNames, isEqual } from 'PackageNameByCommon';
-import { mdxComponents, type ExampleModule } from 'PackageNameByCore';
-import { LiveProvider, LiveEditor, LiveError, LivePreview } from 'PackageNameByReactLive';
-import { Markdown, Prism } from 'neko-ui';
+import * as React from 'react';
+import { type ExampleModule } from '@app/example';
+import * as Pkgs from '@pkg';
+import { CodeElement, SegmentedElement } from 'neko-ui';
+import { createRoot } from 'react-dom/client';
+import './sandbox.css';
+import type { CodeLiveElement } from 'n-code-live';
 
-const sandboxCss = css`
-  .sandbox-box {
-    break-inside: avoid;
-    box-sizing: border-box;
-    padding-bottom: 1rem;
-  }
+const { useEffect, useMemo, useState, useRef } = React;
 
-  .sandbox-container,
-  .sandbox-info,
-  .sandbox-view,
-  .sandbox-btn,
-  .sandbox-live-editor {
-    transition-duration: var(--transition-duration);
-    transition-timing-function: var(--transition-timing-function);
-  }
+interface SandboxProps extends Omit<ExampleModule, 'title'> {
+  legend: string;
+  codes: Record<string, string>;
+  description?: string;
+  style?: React.CSSProperties;
+}
 
-  .sandbox-container,
-  .sandbox-info,
-  .sandbox-live-editor {
-    transition-property: border-color;
-    border: var(--border-base);
-  }
-
-  .sandbox-container {
-    border-radius: var(--border-radius, 8px);
-  }
-
-  fieldset {
-    padding: 0.5rem 1rem 0;
-  }
-
-  .sandbox-title {
-    padding: 0 0.5rem;
-    font-size: 14px;
-    font-weight: 500;
-  }
-
-  .sandbox-view {
-    position: relative;
-    padding-bottom: 2rem;
-    padding-inline: 0.5rem;
-  }
-
-  .sandbox-view > div {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    align-items: flex-end;
-  }
-
-  .sandbox-view .n-md-box,
-  .sandbox-view pre {
-    width: 100%;
-  }
-
-  .sandbox-view pre:first-of-type {
-    margin-top: 0.5rem;
-  }
-
-  .sandbox-info {
-    border: var(--border-base);
-    border-style: dotted;
-    border-width: 0.0625rem 0 0;
-    margin-inline: -1rem;
-    padding: 0 1rem 0.5rem;
-  }
-
-  .sandbox-info .sandbox-title::before {
-    content: none;
-  }
-
-  .sandbox-description {
-    padding: 0 8px;
-  }
-
-  .sandbox-description p:first-of-type {
-    margin-top: 4px;
-  }
-
-  .sandbox-description p:last-of-type {
-    margin-bottom: 4px;
-  }
-
-  .sandbox-btn {
-    position: absolute;
-    right: -16px;
-    bottom: 0;
-    padding: 0.25rem;
-    width: fit-content;
-    font-size: var(--font-size-sm, 12px);
-    cursor: pointer;
-    border-top-left-radius: var(--border-radius, 8px);
-    line-height: 1rem;
-    user-select: none;
-    transition-property: background-color, color, transform;
-  }
-
-  .sandbox-btn::after {
-    display: inline-block;
-    font-size: var(--font-size-xs, 10px);
-    font-family: neko-icon, sans-serif;
-    text-indent: 0.25rem;
-    content: '\\e63e';
-  }
-
-  .sandbox-btn:active {
-    transform: scale(0.95);
-  }
-
-  .sandbox-btn[data-open='true'] {
-    color: white;
-    background-color: var(--primary-color, #5794ff);
-  }
-
-  .sandbox-btn[data-open='false'] {
-    color: var(--primary-color, #5794ff);
-    background-color: var(--primary-bg, #f0f8ff);
-    border-bottom-right-radius: var(--border-radius, 8px);
-  }
-
-  .sandbox-btn.sandbox-btn-desc {
-    transform: translateY(13px);
-    border-bottom-right-radius: 0;
-  }
-
-  .sandbox-live-editor {
-    --code-color: var(--text-color, rgb(0 0 0 / 65%));
-
-    border-style: dotted;
-    border-width: 0.0625rem 0 0;
-    padding: 1rem;
-    margin-inline: -1rem;
-  }
-
-  .sandbox-live-editor.hide {
-    display: none;
-  }
-
-  .sandbox-error-msg {
-    color: var(--error-color);
-  }
-`;
-
-injectGlobal([sandboxCss]);
-
-const Sandbox: FC<ExampleModule> = ({ title, description, ...props }) => {
-  const [init, setInit] = useState(false);
+const scope = {
+  React,
+  ...React,
+  ...Pkgs,
+};
+const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, style }) => {
+  const langsRef = useRef<SegmentedElement>(null);
+  const live = useRef<CodeLiveElement>(null);
+  const codeRef = useRef<CodeElement>(null);
+  const [sources, setSources] = useState<Record<string, string>>({});
+  const [current, setCurrent] = useState({
+    code: '',
+    jsx: false,
+    lang: '',
+  });
   const [open, setOpen] = useState(false);
-  const handleOpen = useCallback(
-    function () {
-      if (!init) {
-        setInit(true);
-      }
-      setOpen(!open);
-    },
-    [init, open]
-  );
-  const hasDesc = useMemo(() => description?.trim().length, [description]);
+  const hasDesc = useMemo(() => {
+    if (typeof description === 'string') {
+      return !!description?.trim().length;
+    }
+    return false;
+  }, [description]);
 
   useEffect(() => {
-    return () => {
-      setOpen(false);
-    };
-  }, []);
+    setSources({ ...(codes || {}) });
+  }, [codes]);
+  const langChange = React.useCallback(
+    (e: CustomEvent<string | number>) => {
+      setCurrent({
+        code: sources[e.detail as string],
+        jsx: e.detail !== 'html',
+        lang: e.detail as string,
+      });
+    },
+    [sources],
+  );
+  const codeChange = React.useCallback(
+    (e: CustomEvent<string>) => {
+      setCurrent({ ...current, code: e.detail });
+      setSources({ ...codes, [current.lang]: e.detail });
+    },
+    [codes, current],
+  );
+  const langs = useMemo(() => {
+    return Object.keys(codes).map((k) => ({
+      value: k,
+      label: k.toLocaleUpperCase(),
+    }));
+  }, [codes]);
 
+  useEffect(() => {
+    if (live.current) {
+      live.current.scope = scope;
+      live.current.transform = {
+        jsxImportSource: 'react',
+        jsxPragma: 'React.createElement',
+        jsxFragmentPragma: 'React.Fragment',
+      };
+      live.current.renderJsx = (dom, el) => {
+        const root = createRoot(el);
+
+        root.render(typeof dom === 'function' ? dom() : dom);
+        return () => {
+          try {
+            root.unmount();
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(error);
+          }
+        };
+      };
+    }
+  }, []);
+  useEffect(() => {
+    const l = langs[0].value;
+
+    setCurrent({
+      jsx: l !== 'html',
+      code: codes[l],
+      lang: l,
+    });
+  }, [codes, langs]);
+  useEffect(() => {
+    if (live.current) {
+      live.current.jsx = current.jsx;
+      live.current.source = sources[current.lang];
+    }
+  }, [current, sources]);
+  useEffect(() => {
+    if (langsRef.current) {
+      langsRef.current.options = langs;
+    }
+  }, [langs]);
+  useEffect(() => {
+    if (langsRef.current) {
+      langsRef.current?.addEventListener('change', langChange);
+    }
+  }, [langChange]);
+  useEffect(() => {
+    const code = codeRef.current;
+
+    if (open && code) {
+      code.addEventListener('change', codeChange);
+    }
+    return () => {
+      code?.removeEventListener('change', codeChange);
+    };
+  }, [codeChange, open]);
   return (
-    <LiveProvider
-      {...props}
-      scope={mdxComponents}
-      theme={{
-        plain: {},
-        styles: [],
-      }}
-    >
-      <section className="sandbox-box">
-        <fieldset className="sandbox-container">
-          <legend className="sandbox-title">{title}</legend>
-          <section className="sandbox-view">
-            <LiveError className="sandbox-error-msg" />
-            <LivePreview />
-            <span
-              className={classNames('sandbox-btn', hasDesc && 'sandbox-btn-desc')}
-              data-open={open}
-              onClick={handleOpen}
-            >
-              编辑示例代码
-            </span>
-          </section>
-          {hasDesc ? (
-            <fieldset className="sandbox-info">
-              <legend className="sandbox-title">描述</legend>
-              <div className="sandbox-description">
-                <Markdown text={description} />
-              </div>
-            </fieldset>
+    <section className="sandbox-box" style={style}>
+      <fieldset className="sandbox-container">
+        <legend className="sandbox-title">{legend}</legend>
+        <section className="sandbox-view">
+          <n-code-live ref={live} />
+          {langs.length > 1 ? (
+            <n-segmented ref={langsRef} class="lang-btn" value={current.lang} />
           ) : null}
-          {init && (
-            <LiveEditor className={`sandbox-live-editor ${open ? '' : 'hide'}`} prism={Prism} />
-          )}
-        </fieldset>
-      </section>
-    </LiveProvider>
+          <span
+            className={['sandbox-btn', hasDesc && 'sandbox-btn-desc'].filter(Boolean).join(' ')}
+            data-open={open}
+            onClick={() => setOpen(!open)}
+          >
+            编辑
+          </span>
+        </section>
+        {hasDesc ? (
+          <fieldset className="sandbox-info">
+            <legend className="sandbox-title">描述</legend>
+            <div className="sandbox-description">
+              <n-md
+                text={description}
+                css={`
+                  .n-md-body {
+                    padding: 0;
+                    margin-block-end: 0;
+                    background-color: transparent;
+                    box-shadow: none;
+                  }
+                `}
+              />
+            </div>
+          </fieldset>
+        ) : null}
+        {open ? (
+          <n-code
+            ref={codeRef}
+            class={['sandbox-live-editor', !open && 'hide'].filter(Boolean).join(' ')}
+            code={sources[current.lang]}
+            lang={current.lang}
+            edit
+            css={`
+              .n-editor,
+              pre {
+                border-radius: 0 0 var(--border-radius) var(--border-radius);
+                box-shadow: none;
+              }
+            `}
+          />
+        ) : null}
+      </fieldset>
+    </section>
   );
 };
 
-export default memo(Sandbox, isEqual);
+export default Sandbox;

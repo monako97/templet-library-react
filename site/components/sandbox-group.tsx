@@ -1,36 +1,49 @@
-import React, { FC } from 'react';
-import { css, injectGlobal } from '@emotion/css';
-import { myDemoKv } from 'PackageNameByCore';
+import React, { FC, Suspense, lazy, useMemo } from 'react';
+import Fallback from '@app/fallback';
+import 'n-code-live';
 import Sandbox from './sandbox';
+import './sandbox-group.css';
 
-const sandboxCss = css`
-  .sandbox-group {
-    width: 100%;
-  }
-`;
-
-injectGlobal([sandboxCss]);
 interface SandboxGroupProps {
   name: string;
-  col?: number;
   ignore?: string[];
 }
 
-const SandboxGroup: FC<SandboxGroupProps> = ({ name, col = 2, ignore = [] }) => {
-  return (
-    <div
-      className="sandbox-group"
-      style={{
-        columnCount: col,
-      }}
-    >
-      {myDemoKv[name]
-        ?.filter((e) => (e.title ? !ignore.includes(e.title) : true))
-        .map((m, i) => (
-          <Sandbox key={i} {...m} />
-        ))}
-    </div>
-  );
+const SandboxGroup: FC<SandboxGroupProps> = (props) => {
+  async function load(name: string) {
+    let box: () => React.JSX.Element;
+
+    try {
+      const resp = (await import(`@app/example/${name}`)).default || [];
+
+      box = () => (
+        <div className="sandbox-group">
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          {resp.map(({ title, ...m }: any, i: number) => (
+            <Sandbox
+              key={title + i}
+              style={{ flex: m.col || 'calc(50% - 24px)' }}
+              legend={title}
+              {...m}
+            />
+          ))}
+        </div>
+      );
+    } catch (error) {
+      box = () => <></>;
+    }
+    return {
+      default: box,
+    };
+  }
+  const data = useMemo(() => {
+    const app = load.bind(null, props.name);
+    const View = lazy(app);
+
+    return <View />;
+  }, [props.name]);
+
+  return <Suspense fallback={Fallback && <Fallback />}>{data}</Suspense>;
 };
 
 export default SandboxGroup;

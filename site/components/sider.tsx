@@ -1,196 +1,173 @@
-import React, { memo, useCallback, useMemo, useRef } from 'react';
-import { css, injectGlobal } from '@emotion/css';
-import { myPkgs, MyPkg, useLocation, Link } from 'PackageNameByCore';
+import React, { useEffect, useMemo, useRef } from 'react';
+import app from '@app';
+import routes, { type RouteConfig } from '@app/routes';
+import { Link, useLocation } from '@moneko/react';
+import { type ColorScheme, type DropdownElement, theme } from 'neko-ui';
+import './sider.global.less';
 
-const menuObj: Record<string, MyPkg[]> = {};
-const extractMenu = (list: MyPkg[]) => {
-  return list?.map((item) => {
-    const type = item?.type || 'default';
-    const prev = menuObj[type] || [];
-
-    Object.assign(menuObj, {
-      [type]: prev.concat({
-        ...item,
-        type,
-      }),
-    });
-  });
+export type MyPkg = Partial<RouteConfig> & {
+  type?: string;
+  title?: string;
+  path?: string;
+  subtitle?: string;
+  icon?: string;
+  order?: number;
+  key?: string;
 };
+const obj: Record<string, MyPkg[]> = {},
+  menuKeys: string[] = [],
+  kv: Record<string, MyPkg> = {};
 
-extractMenu(myPkgs);
+let all: MyPkg[] = [];
 
-const menuKeys = Object.keys(menuObj);
-const siderCss = css`
-  .site-sider,
-  .site-sider-group-title,
-  .site-sider-item,
-  .site-sider-item::before {
-    transition-duration: var(--transition-duration);
-    transition-timing-function: var(--transition-timing-function);
-  }
+function extractMenu(list: RouteConfig[]) {
+  return list.forEach(({ key, meta, children }) => {
+    if (meta) {
+      const type = meta.type || '默认',
+        prev = obj[type as string] || [];
 
-  .site-sider {
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    display: flex;
-    overflow-y: scroll;
-    margin: 0 16px 16px;
-    border-radius: var(--border-radius-base, 4px);
-    width: 240px;
-    min-width: 240px;
-    color: var(--text-color, rgb(0 0 0 / 65%));
-    background-color: var(--header-bg, rgb(255 255 255 / 80%));
-    box-sizing: border-box;
-    backdrop-filter: blur(16px);
-    transition-property: background-color, color;
-    flex-direction: column;
-  }
-
-  .site-sider > div {
-    position: relative;
-    padding: 0 16px;
-  }
-
-  .site-sider-group {
-    position: relative;
-  }
-
-  .site-sider-group:last-of-type {
-    margin-bottom: 16px;
-  }
-
-  .site-sider-group-title {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    margin-bottom: 8px;
-    border-bottom: 1px solid var(--border-color, #d9d9d9);
-    padding: 8px 0;
-    font-size: 14px;
-    color: var(--heading-color, rgb(255 255 255 / 85%));
-    backdrop-filter: blur(16px);
-    line-height: 20px;
-    transition-property: background-color, color, border-color;
-  }
-
-  .site-sider-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .site-sider-item {
-    position: relative;
-    display: flex;
-    align-items: center;
-    border-radius: var(--border-radius-base, 4px);
-    min-height: 45px;
-    color: var(--text-color, rgb(0 0 0 / 65%));
-    flex-wrap: wrap;
-    cursor: pointer;
-    user-select: contain;
-  }
-
-  .site-sider-item:active {
-    transform: scale(0.95);
-  }
-
-  .site-sider-item::before {
-    position: absolute;
-    right: 0;
-    display: block;
-    border-radius: 0 var(--border-radius-base, 4px) var(--border-radius-base, 4px) 0;
-    width: 5px;
-    height: 100%;
-    background-color: var(--primary-border, #5794ff);
-    content: '';
-    transition-property: background-color, transform;
-    transform: scale(0);
-  }
-
-  .site-sider-item[data-active='false'] {
-    transition-property: background-color, color, transform;
-  }
-
-  .site-sider-item[data-active='true'] {
-    color: var(--primary-color, #5794ff);
-    background-color: var(--primary-bg, #f0f8ff);
-    transition-property: background-color, transform;
-  }
-
-  .site-sider-item[data-active='true']::before {
-    transform: scale(1);
-  }
-
-  .site-sider-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 32px;
-    height: 100%;
-  }
-
-  .site-sider-label {
-    position: relative;
-  }
-
-  .site-sider-label,
-  .site-sider-subtitle {
-    overflow: hidden;
-    width: calc(100% - 32px);
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .site-sider-subtitle {
-    margin-left: 32px;
-    padding-bottom: 4px;
-    font-size: 12px;
-    opacity: 0.67;
-  }
-`;
-
-injectGlobal([siderCss]);
-const Sider = () => {
-  const menuEl = useRef<HTMLDivElement>(null);
-  const location = useLocation();
-  const activeKey = useMemo(() => location.pathname.substring(1), [location]);
-
-  const renderMenu = useCallback(
-    (list?: MyPkg[]) => {
-      return list?.map((item) => {
-        return (
-          <Link
-            key={item.key}
-            to={`/${item.key}`}
-            className="site-sider-item"
-            data-active={activeKey === item.key}
-          >
-            <span className="site-sider-icon">{item.icon}</span>
-            <div className="site-sider-label">{item.title || item.path}</div>
-            {item.subtitle && <div className="site-sider-subtitle">{item.subtitle}</div>}
-          </Link>
-        );
+      obj[type as string] = prev.concat({
+        ...meta,
+        type: type as string,
+        key,
       });
-    },
-    [activeKey]
+      if (!menuKeys.includes(type as string)) {
+        menuKeys.push(type as string);
+      }
+      if (key) {
+        kv[key] = {
+          ...meta,
+          type: type as string,
+          key,
+        };
+      }
+    }
+    if (Array.isArray(children) && children.length) {
+      extractMenu(children);
+    }
+  });
+}
+
+extractMenu(routes);
+
+for (const key in obj) {
+  if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    obj[key] = obj[key].sort((a, b) => (a.order || 0) - (b.order || 0));
+    all = all.concat(obj[key]);
+  }
+}
+
+export { all, kv };
+function Sider({ scheme }: { scheme?: keyof typeof ColorScheme }) {
+  const sider = useRef<HTMLDivElement>(null);
+  const themeSwitch = useRef<DropdownElement>(null);
+  const location = useLocation();
+  const icons: Record<string, string> = {
+    dark: '🌛',
+    light: '🌞',
+    auto: '⚙️',
+  };
+  const themes = useMemo(
+    () => [
+      { label: '暗黑', value: 'dark', icon: icons.dark },
+      { label: '明亮', value: 'light', icon: icons.light },
+      { label: '跟随系统', value: 'auto', icon: icons.auto },
+    ],
+    [icons.auto, icons.dark, icons.light],
   );
+
+  const active = useMemo(() => location.pathname.substring(1), [location.pathname]);
+
+  useEffect(() => {
+    if (active) {
+      sider.current?.querySelector('.site-sider-item[data-active="true"] > a')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      });
+    }
+  }, [active]);
+  useEffect(() => {
+    if (themeSwitch.current) {
+      themeSwitch.current.items = themes;
+      themeSwitch.current?.addEventListener('change', (e: CustomEvent) => {
+        theme.setScheme(e.detail[0]);
+      });
+    }
+  }, [themes]);
 
   return (
-    <div className="site-sider">
-      <div ref={menuEl}>
-        {menuKeys.map((key) => {
-          return (
-            <div key={key} className="site-sider-group">
-              <div className="site-sider-group-title">{key}</div>
-              <div className="site-sider-list">{renderMenu(menuObj[key])}</div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
+    <section ref={sider} className="site-left">
+      <header className="site-header">
+        <Link to="/">
+          <n-avatar
+            css={`
+              .avatar {
+                background-image: none;
+                animation: none;
+              }
+            `}
+          />
+        </Link>
+        <hgroup className="site-title">
+          <h1 data-truncated>{app.name.replace(/-/g, ' ').toLocaleUpperCase()}</h1>
+          <i>{kv[active]?.subtitle || app.description}</i>
+        </hgroup>
+        <n-dropdown
+          ref={themeSwitch}
+          value={scheme}
+          trigger="click"
+          css={`
+            .theme-btn {
+              font-size: 28px;
+              text-align: center;
+              color: #fc0;
+              transition: transform var(--transition-duration) var(--transition-timing-function);
+              min-inline-size: 28px;
+              line-height: 32px;
+              cursor: pointer;
+              user-select: none;
+            }
 
-export default memo(Sider, () => true);
+            [data-theme='dark'] .theme-btn {
+              content: '☪';
+              color: #fff;
+            }
+          `}
+        >
+          <span className="theme-btn">{icons[scheme!]}</span>
+        </n-dropdown>
+      </header>
+      <section className="site-sider">
+        <ul>
+          {menuKeys.map((key) => {
+            return (
+              <li key={key} className="site-sider-group">
+                <p className="site-sider-group-title">{key}</p>
+                <ul className="site-sider-list">
+                  {obj[key].map((item, i) => {
+                    return (
+                      <li
+                        key={`${i}${item.path}${item.key}`}
+                        className="site-sider-item"
+                        data-active={active === item.key}
+                      >
+                        <Link to={`/${item.key}` as string}>
+                          <span className="site-sider-icon">{item.icon}</span>
+                          <div className="site-sider-label">{item.title || item.path}</div>
+                          {item.subtitle && (
+                            <div className="site-sider-subtitle">{item.subtitle}</div>
+                          )}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    </section>
+  );
+}
+export default Sider;

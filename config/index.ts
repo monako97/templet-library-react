@@ -1,26 +1,17 @@
-import { DEV } from 'PackageNameByCore/build/process-env';
-import type { PartialConfigType } from 'PackageNameByCore';
+import type { ConfigType } from 'PackageNameByCore';
 
-const conf: PartialConfigType = {
-  devtool: DEV ? 'eval-cheap-module-source-map' : false,
-  publicPath: DEV ? '/' : './',
-  routerMode: 'hash',
-  htmlPluginOption: {
-    // favicon: './site/assets/images/favicon.ico',
+const conf: Partial<ConfigType> = {
+  minifier: {
+    css: {
+      type: 'cssnano',
+    },
   },
-  miniIdc: false,
-  designSize: 1920,
-  bundleAnalyzer: false,
+  htmlPluginOption: {
+    favicon: './site/assets/images/favicon.ico',
+  },
   fallbackCompPath: '@/components/fallback',
   externals: [/(.+)\/__tests__\/(.+)/i],
   importOnDemand: {
-    '@moneko/common': {
-      transform: 'lib/${member}',
-    },
-    'neko-ui': {
-      transform: 'es/${member}',
-      memberTransformers: ['dashed_case'],
-    },
     lodash: {
       transform: '${member}',
     },
