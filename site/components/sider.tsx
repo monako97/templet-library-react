@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import app from '@app';
+import app from '@app/info';
 import routes, { type RouteConfig } from '@app/routes';
 import { Link, useLocation } from '@moneko/react';
 import { type ColorScheme, type DropdownElement, theme } from 'neko-ui';
