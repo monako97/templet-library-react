@@ -1,5 +1,5 @@
 import { ReactElement, createElement } from 'react';
-import type { MDXComponents } from 'mdx/types';
+import type { MDXComponents } from '@moneko/react/mdx';
 
 type Props = {
   children: ReactElement;
