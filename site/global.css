@@ -37,29 +37,19 @@ n-provider {
     box-sizing: border-box;
     margin: 16px auto 0;
     min-block-size: calc(100vb - 132px);
+}
 
-    n-md::part(body) > div:empty {
-        margin: 0;
-        padding: 0;
-        background-color: transparent;
-        backdrop-filter: none;
-        box-shadow: none;
-        pointer-events: none;
-    }
+.site-page-view n-md::part(body) {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+    pointer-events: none;
+}
 
-    n-md::part(toc) {
-        inset-block-start: 16px;
-    }
-
-    n-md::part(body) {
-        tr > th,
-        tr > td {
-            &:last-child,
-            &:nth-last-child(2) {
-                min-inline-size: 45px;
-            }
-        }
-    }
+.site-page-view n-md::part(toc) {
+    inset-block-start: 16px;
 }
 
 body {
