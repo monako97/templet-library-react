@@ -1,6 +1,6 @@
 {
   "name": "templet-library-react",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "组件库模板",
   "main": "lib/index.js",
   "scripts": {},
@@ -21,6 +21,7 @@
     "test",
     "typings",
     "jest.config.ts",
-    "tsconfig.json"
+    "tsconfig.json",
+    "CHANGELOG.md"
   ]
 }
