@@ -15,7 +15,7 @@ interface SandboxProps extends Omit<ExampleModule, 'title'> {
   style?: React.CSSProperties;
 }
 
-const scope = {
+const components = {
   React,
   ...React,
   ...Pkgs,
@@ -39,7 +39,7 @@ const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, styl
   }, [description]);
 
   useEffect(() => {
-    setSources({ ...(codes || {}) });
+    setSources({ ...codes });
   }, [codes]);
   const langChange = React.useCallback(
     (e: CustomEvent<string | number>) => {
@@ -67,7 +67,7 @@ const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, styl
 
   useEffect(() => {
     if (live.current) {
-      live.current.scope = scope;
+      live.current.components = components;
       live.current.transform = {
         jsxImportSource: 'react',
         jsxPragma: 'React.createElement',
