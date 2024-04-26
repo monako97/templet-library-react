@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import docs from '@app/docs';
 import { Outlet, useLocation } from '@moneko/react';
-import { type ColorScheme, ProviderElement, theme } from 'neko-ui';
+import { type ColorScheme, type ProviderElement, theme } from 'neko-ui';
 import Colors from './components/colors';
 import Coverage from './components/coverage';
 import Footer from './components/footer';
@@ -17,11 +17,11 @@ function App() {
   const [scheme, setScheme] = useState(orgScheme());
   const location = useLocation();
   const active = useMemo(() => location.pathname.substring(1), [location.pathname]);
-  const doc = useMemo(() => docs[active], [active]);
+  const doc = useMemo(() => docs[active] || [], [active]);
 
   useEffect(() => {
     box.current?.scrollTo({ top: 0, behavior: 'smooth' });
-    provider.current?.addEventListener('scheme', (e: CustomEvent<keyof typeof ColorScheme>) => {
+    provider.current?.addEventListener?.('scheme', (e: CustomEvent<keyof typeof ColorScheme>) => {
       setScheme(e.detail);
       document.documentElement.setAttribute('data-theme', theme.isDark() ? 'dark' : 'light');
     });
@@ -31,7 +31,7 @@ function App() {
     <n-provider ref={provider}>
       <Sider scheme={scheme} />
       <main ref={box} className="site-doc-main">
-        {!location.pathname.substring(1).startsWith('@moneko') ? <Coverage /> : null}
+        {!active.startsWith('@') && <Coverage />}
         <div className="site-page-view">
           <n-md
             css={`
@@ -44,7 +44,7 @@ function App() {
                 margin-block-end: 0;
               }
             `}
-            not-render
+            not-render={true}
           >
             <div>
               <Outlet />
@@ -57,7 +57,7 @@ function App() {
           {!active && (
             <>
               <Colors />
-              <n-md text={`[TOC]\n${log}`} />
+              {log ? <n-md text={`[TOC]\n${log}`} /> : null}
             </>
           )}
         </div>

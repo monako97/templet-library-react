@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import app from '@app/info';
 import routes, { type RouteConfig } from '@app/routes';
 import { Link, useLocation } from '@moneko/react';
-import { type ColorScheme, type DropdownElement, theme } from 'neko-ui';
+import { type ColorScheme, type DropdownElement, type MenuOption, theme } from 'neko-ui';
 import './sider.global.less';
 
 export type MyPkg = Partial<RouteConfig> & {
@@ -67,11 +67,11 @@ function Sider({ scheme }: { scheme?: keyof typeof ColorScheme }) {
     light: '🌞',
     auto: '⚙️',
   };
-  const themes = useMemo(
+  const themes = useMemo<MenuOption[]>(
     () => [
-      { label: '暗黑', value: 'dark', icon: icons.dark },
-      { label: '明亮', value: 'light', icon: icons.light },
-      { label: '跟随系统', value: 'auto', icon: icons.auto },
+      { label: '暗黑', value: 'dark', icon: <i>{icons.dark}</i> },
+      { label: '明亮', value: 'light', icon: <i>{icons.light}</i> },
+      { label: '跟随系统', value: 'auto', icon: <i>{icons.auto}</i> },
     ],
     [icons.auto, icons.dark, icons.light],
   );
@@ -89,7 +89,7 @@ function Sider({ scheme }: { scheme?: keyof typeof ColorScheme }) {
   useEffect(() => {
     if (themeSwitch.current) {
       themeSwitch.current.items = themes;
-      themeSwitch.current?.addEventListener('change', (e: CustomEvent) => {
+      themeSwitch.current?.addEventListener?.('change', (e: CustomEvent) => {
         theme.setScheme(e.detail[0]);
       });
     }
@@ -109,7 +109,7 @@ function Sider({ scheme }: { scheme?: keyof typeof ColorScheme }) {
           />
         </Link>
         <hgroup className="site-title">
-          <h1 data-truncated>{app.name.replace(/-/g, ' ').toLocaleUpperCase()}</h1>
+          <h1 data-truncated>REMOTE LIB</h1>
           <i>{kv[active]?.subtitle || app.description}</i>
         </hgroup>
         <n-dropdown

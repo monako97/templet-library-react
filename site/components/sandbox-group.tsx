@@ -1,6 +1,7 @@
 import React, { FC, Suspense, lazy, useMemo } from 'react';
+import examples from '@app/example';
 import Fallback from '@app/fallback';
-import 'n-code-live';
+import { isFunction } from '@moneko/common';
 import Sandbox from './sandbox';
 import './sandbox-group.css';
 
@@ -11,15 +12,15 @@ interface SandboxGroupProps {
 
 const SandboxGroup: FC<SandboxGroupProps> = (props) => {
   async function load(name: string) {
-    let box: () => React.JSX.Element;
+    let box: () => JSX.Element | null = () => null;
+    const exampleModule = examples[`@app/example/${name}`];
 
-    try {
-      const resp = (await import(`@app/example/${name}`)).default || [];
+    if (name.length > 0 && isFunction(exampleModule)) {
+      const resp = (await exampleModule()).default || [];
 
       box = () => (
         <div className="sandbox-group">
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          {resp.map(({ title, ...m }: any, i: number) => (
+          {resp.map(({ title = '', ...m }, i: number) => (
             <Sandbox
               key={title + i}
               style={{ flex: m.col || 'calc(50% - 24px)' }}
@@ -29,8 +30,6 @@ const SandboxGroup: FC<SandboxGroupProps> = (props) => {
           ))}
         </div>
       );
-    } catch (error) {
-      box = () => <></>;
     }
     return {
       default: box,

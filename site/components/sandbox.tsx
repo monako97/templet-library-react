@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { type ExampleModule } from '@app/example';
-import * as Pkgs from '@pkg';
-import { CodeElement, SegmentedElement } from 'neko-ui';
+import * as Pkgs from '@pkg/index';
 import { createRoot } from 'react-dom/client';
 import './sandbox.css';
 import type { CodeLiveElement } from 'n-code-live';
+import type { BaseOption, CodeElement, SegmentedElement } from 'neko-ui';
 
 const { useEffect, useMemo, useState, useRef } = React;
 
@@ -15,7 +15,7 @@ interface SandboxProps extends Omit<ExampleModule, 'title'> {
   style?: React.CSSProperties;
 }
 
-const components = {
+const scope = {
   React,
   ...React,
   ...Pkgs,
@@ -58,16 +58,16 @@ const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, styl
     },
     [codes, current],
   );
-  const langs = useMemo(() => {
-    return Object.keys(codes).map((k) => ({
+  const langs = useMemo<BaseOption[]>(() => {
+    return Object.keys(codes).map<BaseOption>((k) => ({
       value: k,
-      label: k.toLocaleUpperCase(),
+      label: <>{k.toLocaleUpperCase()}</>,
     }));
   }, [codes]);
 
   useEffect(() => {
     if (live.current) {
-      live.current.components = components;
+      live.current.components = scope;
       live.current.transform = {
         jsxImportSource: 'react',
         jsxPragma: 'React.createElement',
@@ -76,7 +76,7 @@ const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, styl
       live.current.renderJsx = (dom, el) => {
         const root = createRoot(el);
 
-        root.render(typeof dom === 'function' ? dom() : dom);
+        root.render(typeof dom === 'function' ? (dom() as React.ReactNode) : dom);
         return () => {
           try {
             root.unmount();
@@ -93,8 +93,8 @@ const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, styl
 
     setCurrent({
       jsx: l !== 'html',
-      code: codes[l],
-      lang: l,
+      code: l !== void 0 ? codes[l] : '',
+      lang: l as string,
     });
   }, [codes, langs]);
   useEffect(() => {
@@ -110,17 +110,17 @@ const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, styl
   }, [langs]);
   useEffect(() => {
     if (langsRef.current) {
-      langsRef.current?.addEventListener('change', langChange);
+      langsRef.current?.addEventListener?.('change', langChange);
     }
   }, [langChange]);
   useEffect(() => {
     const code = codeRef.current;
 
     if (open && code) {
-      code.addEventListener('change', codeChange);
+      code.addEventListener?.('change', codeChange);
     }
     return () => {
-      code?.removeEventListener('change', codeChange);
+      code?.removeEventListener?.('change', codeChange);
     };
   }, [codeChange, open]);
   return (
