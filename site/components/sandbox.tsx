@@ -1,9 +1,10 @@
-import React from 'react';
-import { type ExampleModule } from '@app/example';
-import * as Pkgs from '@pkg/index';
-import { createRoot } from 'react-dom/client';
 import './sandbox.css';
-import type { CodeLiveElement } from 'n-code-live';
+import * as React from 'react';
+import { type ExampleModule } from '@app/example';
+import CodeLive, { type CodeLiveElement } from 'n-code-live';
+import { jsx } from 'react/jsx-runtime';
+import { createRoot } from 'react-dom/client';
+import * as Pkgs from '@pkg/index';
 import type { BaseOption, CodeElement, SegmentedElement } from 'neko-ui';
 
 const { useEffect, useMemo, useState, useRef } = React;
@@ -17,6 +18,8 @@ interface SandboxProps extends Omit<ExampleModule, 'title'> {
 
 const scope = {
   React,
+  CodeLive,
+  jsx,
   ...React,
   ...Pkgs,
 };
@@ -61,7 +64,7 @@ const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, styl
   const langs = useMemo<BaseOption[]>(() => {
     return Object.keys(codes).map<BaseOption>((k) => ({
       value: k,
-      label: <>{k.toLocaleUpperCase()}</>,
+      label: k.toLocaleUpperCase() as unknown as JSX.Element,
     }));
   }, [codes]);
 
@@ -99,7 +102,6 @@ const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, styl
   }, [codes, langs]);
   useEffect(() => {
     if (live.current) {
-      live.current.jsx = current.jsx;
       live.current.source = sources[current.lang];
     }
   }, [current, sources]);
@@ -128,7 +130,7 @@ const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, styl
       <fieldset className="sandbox-container">
         <legend className="sandbox-title">{legend}</legend>
         <section className="sandbox-view">
-          <n-code-live ref={live} />
+          <n-code-live ref={live} jsx={current.jsx} />
           {langs.length > 1 ? (
             <n-segmented ref={langsRef} class="lang-btn" value={current.lang} />
           ) : null}

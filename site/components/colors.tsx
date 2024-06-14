@@ -1,5 +1,5 @@
-import React from 'react';
 import './colors.global.less';
+import React from 'react';
 import readme from '../../README.md?raw';
 
 function Colors() {

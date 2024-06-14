@@ -1,14 +1,14 @@
+import './global.css';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import docs from '@app/docs';
 import { Outlet, useLocation } from '@moneko/react';
-import { type ColorScheme, type ProviderElement, theme } from 'neko-ui';
+import { type ColorScheme, type ProviderElement, mdStyle, theme } from 'neko-ui';
 import Colors from './components/colors';
 import Coverage from './components/coverage';
 import Footer from './components/footer';
 import SandboxGroup from './components/sandbox-group';
 import Sider from './components/sider';
-import './global.css';
-import log from '../CHANGELOG.md?raw';
+import ChangeLog from '../CHANGELOG.md';
 
 function App() {
   const provider = useRef<ProviderElement>(null);
@@ -29,27 +29,16 @@ function App() {
 
   return (
     <n-provider ref={provider}>
+      <style>{mdStyle}</style>
       <Sider scheme={scheme} />
       <main ref={box} className="site-doc-main">
         {!active.startsWith('@') && <Coverage />}
         <div className="site-page-view">
-          <n-md
-            css={`
-              .n-md-body:has(n-md) {
-                overflow: initial;
-                padding: 0;
-                background-color: transparent;
-                box-shadow: unset;
-                backdrop-filter: unset;
-                margin-block-end: 0;
-              }
-            `}
-            not-render={true}
-          >
-            <div>
+          <div className="n-md-box">
+            <div className="n-md-body">
               <Outlet />
             </div>
-          </n-md>
+          </div>
           <SandboxGroup name={active} />
           {doc.map((Item, i) => (
             <Item key={i} />
@@ -57,19 +46,17 @@ function App() {
           {!active && (
             <>
               <Colors />
-              {log ? <n-md text={`[TOC]\n${log}`} /> : null}
+              <div className="n-md-box">
+                <div className="n-md-body">
+                  <ChangeLog />
+                </div>
+              </div>
             </>
           )}
         </div>
         <Footer />
       </main>
-      <n-back-top
-        css={`
-          .back-top {
-            position: fixed;
-          }
-        `}
-      />
+      <n-back-top css=".back-top { position: fixed; }" />
       {scheme === 'light' || !isDark() ? <div className="n-site-bg" /> : null}
     </n-provider>
   );
