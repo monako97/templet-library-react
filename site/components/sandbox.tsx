@@ -165,7 +165,7 @@ const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, styl
             ref={codeRef}
             class={['sandbox-live-editor', !open && 'hide'].filter(Boolean).join(' ')}
             code={sources[current.lang]}
-            lang={current.lang}
+            language={current.lang}
             edit
             css={`
               .n-editor,
