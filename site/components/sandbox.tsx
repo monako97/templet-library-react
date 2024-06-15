@@ -77,9 +77,10 @@ const Sandbox: React.FC<SandboxProps> = ({ codes = {}, description, legend, styl
         jsxFragmentPragma: 'React.Fragment',
       };
       live.current.renderJsx = (dom, el) => {
+        const Dom = dom as unknown as React.FC;
         const root = createRoot(el);
 
-        root.render(typeof dom === 'function' ? (dom() as React.ReactNode) : dom);
+        root.render(typeof Dom === 'function' ? <Dom /> : Dom);
         return () => {
           try {
             root.unmount();
