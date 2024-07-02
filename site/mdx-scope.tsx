@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import { css } from '@moneko/css';
 import { type TabOption, theme } from 'neko-ui';
 import type { MDXComponents } from '@moneko/react/mdx';
 
 type Props = {
-  children: Element;
+  children: React.ReactElement;
   [key: string]: unknown;
 };
 
@@ -126,29 +128,31 @@ export function NpmTabs(p: Props) {
 
 const mdxScope: MDXComponents = {
   h1(p: Props) {
-    return <h1 data-prefix="# " role="heading" aria-level="1" {...p} />;
+    return <h1 data-prefix="# " role="heading" aria-level={1} {...p} />;
   },
   h2(p: Props) {
-    return <h2 data-prefix="# " role="heading" aria-level="2" {...p} />;
+    return <h2 data-prefix="# " role="heading" aria-level={2} {...p} />;
   },
   h3(p: Props) {
-    return <h3 data-prefix="# " role="heading" aria-level="3" {...p} />;
+    return <h3 data-prefix="# " role="heading" aria-level={3} {...p} />;
   },
   h4(p: Props) {
-    return <h4 data-prefix="# " role="heading" aria-level="4" {...p} />;
+    return <h4 data-prefix="# " role="heading" aria-level={4} {...p} />;
   },
   h5(p: Props) {
-    return <h5 data-prefix="# " role="heading" aria-level="5" {...p} />;
+    return <h5 data-prefix="# " role="heading" aria-level={5} {...p} />;
   },
   h6(p: Props) {
-    return <h6 data-prefix="# " role="heading" aria-level="6" {...p} />;
+    return <h6 data-prefix="# " role="heading" aria-level={6} {...p} />;
   },
   pre(p: Props) {
     return (
       <n-code
         toolbar={true}
         line-number={false}
-        language={p.children.className.replace('language-', '').replace(/ .*$/, '')}
+        language={(p.children as React.ReactElement & { className?: string })?.className
+          ?.replace('language-', '')
+          .replace(/ .*$/, '')}
         {...p}
       />
     );
