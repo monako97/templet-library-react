@@ -1,6 +1,6 @@
 {
   "name": "templet-library-react",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "description": "组件库模板",
   "main": "lib/index.js",
   "scripts": {},
