@@ -16,7 +16,7 @@ export type MyPkg = Partial<RouteConfig> & {
 };
 const obj: Record<string, MyPkg[]> = {},
   menuKeys: string[] = [],
-  kv: Record<string, MyPkg> = {};
+  kv: Record<string, MyPkg | undefined> = {};
 
 let all: MyPkg[] = [];
 
