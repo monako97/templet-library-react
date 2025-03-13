@@ -1,7 +1,7 @@
 import './coverage.css';
 import React, { type FC, memo, useMemo } from 'react';
 import coverage from '@app/coverage';
-import app from '@app/info';
+import { name } from '@app/info';
 import { useLocation } from '@moneko/react';
 
 type CoverageType = 'statements' | 'conditionals' | 'methods';
@@ -17,9 +17,9 @@ function getNum(num: number) {
 const Coverage: FC = () => {
   const location = useLocation();
   const coverages = useMemo(() => {
-    const name = location.pathname.substring(1);
+    const component = location.pathname.substring(1);
 
-    return coverage[name ? `components.${name}` : app.name] || {};
+    return coverage[component ? `components.${component}` : name] || {};
   }, [location.pathname]);
 
   if (location.pathname === '/examples') return null;

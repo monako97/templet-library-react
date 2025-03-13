@@ -1,6 +1,6 @@
 import './sider.global.less';
 import React, { useEffect, useMemo, useRef } from 'react';
-import app from '@app/info';
+import { name, description } from '@app/info';
 import routes, { type RouteConfig } from '@app/routes';
 import { Link, useLocation } from '@moneko/react';
 import { type ColorScheme, type DropdownElement, type MenuOption, theme } from 'neko-ui';
@@ -109,8 +109,8 @@ function Sider({ scheme }: { scheme?: keyof typeof ColorScheme }) {
           />
         </Link>
         <hgroup className="site-title">
-          <h1 data-truncated>REMOTE LIB</h1>
-          <i>{kv[active]?.subtitle || app.description}</i>
+          <h1 data-truncated>{name}</h1>
+          <i>{kv[active]?.subtitle || description}</i>
         </hgroup>
         <n-dropdown
           ref={themeSwitch}
