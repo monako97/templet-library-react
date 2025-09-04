@@ -1,13 +1,13 @@
 {
   "name": "templet-library-react",
-  "version": "2.5.4",
+  "version": "2.5.5",
   "description": "组件库模板",
   "main": "lib/index.js",
   "scripts": {},
   "author": "moneko",
   "license": "MIT",
   "devDependencies": {
-    "neko-ui": "2.13.7",
+    "neko-ui": "2.13.8",
     "n-code-live": "2.1.1"
   },
   "dependencies": {},
