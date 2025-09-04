@@ -1,10 +1,12 @@
-import './footer.css';
-import React, { memo } from 'react';
-import { name, repository, author } from '@app/info';
+import React, { memo, useState } from 'react';
+import { author, name, repository } from '@app/info';
 
-const year = new Date().getFullYear();
+import './footer.css';
 
 const Footer = () => {
+  'use memo';
+  const [year] = useState(new Date().getFullYear());
+
   return (
     <footer className="n-site-footer">
       <p>

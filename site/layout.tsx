@@ -1,16 +1,64 @@
-import './global.css';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import docs from '@app/docs';
 import { Outlet, useLocation } from '@moneko/react';
-import { type ColorScheme, type ProviderElement, mdStyle, theme } from 'neko-ui';
+import {
+  Avatar,
+  BackTop,
+  Button,
+  Code,
+  type ColorScheme,
+  Dropdown,
+  Empty,
+  Input,
+  InputNumber,
+  Md,
+  mdStyle,
+  Menu,
+  Modal,
+  Provider,
+  type ProviderElement,
+  registry,
+  Segmented,
+  Select,
+  Skeleton,
+  Tabs,
+  theme,
+  Tree,
+  Typography,
+} from 'neko-ui';
+
+import ChangeLog from '../CHANGELOG.md';
+
 import Colors from './components/colors';
 import Coverage from './components/coverage';
 import Footer from './components/footer';
 import SandboxGroup from './components/sandbox-group';
 import Sider from './components/sider';
-import ChangeLog from '../CHANGELOG.md';
 
+import './global.css';
+
+registry(
+  Md,
+  Provider,
+  BackTop,
+  Code,
+  Segmented,
+  Avatar,
+  Typography,
+  Empty,
+  Dropdown,
+  Modal,
+  Select,
+  Tabs,
+  Input,
+  Menu,
+  Button,
+  InputNumber,
+  Tree,
+  Skeleton,
+);
 function App() {
+  'use memo';
   const provider = useRef<ProviderElement>(null);
   const box = useRef<HTMLDivElement>(null);
   const { isDark, scheme: orgScheme } = theme;
@@ -62,4 +110,4 @@ function App() {
   );
 }
 
-export default App;
+export default memo(App);

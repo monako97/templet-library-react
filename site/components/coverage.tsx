@@ -1,8 +1,9 @@
-import './coverage.css';
 import React, { type FC, memo, useMemo } from 'react';
 import coverage from '@app/coverage';
 import { name } from '@app/info';
 import { useLocation } from '@moneko/react';
+
+import './coverage.css';
 
 type CoverageType = 'statements' | 'conditionals' | 'methods';
 const conf: Record<CoverageType, string> = {
@@ -15,6 +16,7 @@ function getNum(num: number) {
   return typeof num === 'number' && !isNaN(num) ? num : '-';
 }
 const Coverage: FC = () => {
+  'use memo';
   const location = useLocation();
   const coverages = useMemo(() => {
     const component = location.pathname.substring(1);

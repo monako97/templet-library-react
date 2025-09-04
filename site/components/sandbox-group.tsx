@@ -1,9 +1,11 @@
-import './sandbox-group.css';
-import React, { FC, Suspense, lazy, useMemo } from 'react';
+import React, { type FC, lazy, memo, Suspense, useMemo } from 'react';
 import examples from '@app/example';
 import Fallback from '@app/fallback';
 import { isFunction } from '@moneko/common';
+
 import Sandbox from './sandbox';
+
+import './sandbox-group.css';
 
 interface SandboxGroupProps {
   name: string;
@@ -11,6 +13,7 @@ interface SandboxGroupProps {
 }
 
 const SandboxGroup: FC<SandboxGroupProps> = (props) => {
+  'use memo';
   async function load(name: string) {
     let box: () => JSX.Element | null = () => null;
     const exampleModule = examples[`@app/example/${name}`];
@@ -45,4 +48,4 @@ const SandboxGroup: FC<SandboxGroupProps> = (props) => {
   return <Suspense fallback={Fallback && <Fallback />}>{data}</Suspense>;
 };
 
-export default SandboxGroup;
+export default memo(SandboxGroup);
