@@ -1,5 +1,5 @@
 import React, { type FC, lazy, memo, Suspense, useMemo } from 'react';
-import examples from 'docs:examples';
+import examples from 'docs:example';
 import Fallback from 'app:fallback';
 import { isFunction } from '@moneko/common';
 
