@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
-import docs from '@app/docs';
+import docs from 'docs:docs';
 import { Outlet, useLocation } from '@moneko/react';
 import {
   Avatar,

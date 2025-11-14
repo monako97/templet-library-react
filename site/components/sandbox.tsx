@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { jsx } from 'react/jsx-runtime';
 import { createRoot } from 'react-dom/client';
-import { type ExampleModule } from '@app/example';
+import { type ExampleModule } from 'docs:examples';
 import * as Pkgs from '@pkg/index';
 import CodeLive, { type CodeLiveElement } from 'n-code-live';
 import {
